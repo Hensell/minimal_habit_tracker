@@ -1,0 +1,13 @@
+{
+
+  "welcome": "Hi.",
+  "@welcome": {
+    "description": "The Welcome messeage."
+  },
+
+  "addHabit": "Add habit",
+  "@addHabit": {
+    "description": "To add habit."
+  }
+
+}
