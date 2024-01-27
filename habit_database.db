@@ -1,3 +1,8 @@
 {"version":1,"sembast":1}
-{"key":1,"store":"habit","value":{"title":"Dormir","description":"Dormir temprano","lastDate":"","codePoint":57947,"dates":[""]}}
-{"key":2,"store":"habit","value":{"title":"Leer","description":"Leer todos los días ","lastDate":"","codePoint":58873,"dates":[""]}}
+{"key":1,"store":"habit","value":{"id":0,"title":"Dormir","description":"Hay que dormir todos los días","lastDate":"","codePoint":58136,"dates":{}}}
+{"key":2,"store":"habit","value":{"id":0,"title":"Programar","description":"Hay que programar todos los días","lastDate":"","codePoint":57947,"dates":{}}}
+{"key":3,"store":"habit","value":{"id":0,"title":"Ejercicio","description":"Hay que hacer ejercicio todos los días","lastDate":"","codePoint":57947,"dates":{}}}
+{"key":4,"store":"habit","value":{"id":0,"title":"Dibujar","description":"Hay que dibujar todos los días","lastDate":"","codePoint":58873,"dates":{}}}
+{"key":5,"store":"habit","value":{"title":"Cantar","description":"no lo se","lastDate":"","codePoint":58780,"dates":{}}}
+{"key":1,"store":"habit","value":{"id":0,"title":"Dormir","description":"Hay que dormir todos los días","lastDate":"27/1/2024","codePoint":58136,"dates":{"27/1/2024":true}}}
+{"key":1,"store":"habit","value":{"id":0,"title":"Dormir","description":"Hay que dormir todos los días","lastDate":"","codePoint":58136,"dates":{}}}

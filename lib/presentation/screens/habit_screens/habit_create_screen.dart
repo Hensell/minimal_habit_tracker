@@ -83,8 +83,6 @@ class HabitCreateScreen extends StatelessWidget {
       ),
       floatingActionButton: ElevatedButton.icon(
           onPressed: () {
-            // !note    print(_selectedIcon.value.codePoint);
-
             context.read<HabitCubit>().insert(HabitEntity(
                 title: _nameController.text,
                 description: _descriptionController.text,

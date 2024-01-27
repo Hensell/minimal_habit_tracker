@@ -19,4 +19,9 @@ class HabitCubit extends Cubit<HabitState> {
   Future<void> insert(HabitEntity habitEntity) async {
     await _habitRepository.insert(habitEntity);
   }
+
+  Future<void> toggle(int key) async {
+    final updatedHabit = await _habitRepository.toggleToday(key);
+    emit(HabitSuccess(updatedHabit));
+  }
 }

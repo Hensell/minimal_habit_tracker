@@ -1,18 +1,23 @@
 import 'package:minimal_habit_tracker/domain/entities/habit_entity.dart';
 import 'package:minimal_habit_tracker/domain/repositories/habit_repository.dart';
 
-import 'local_data_source_impl.dart';
+import '../database/database_client.dart';
 
 class HabitRepositoryImpl implements HabitRepository {
-  LocalDataSourceImpl localDataSource = LocalDataSourceImpl();
+  final DatabaseClient databaseClient = DatabaseClient();
 
   @override
-  Future<List<HabitEntity>> get() {
-    return localDataSource.get();
+  Future<List<HabitEntity>> get() async {
+    return await databaseClient.get();
   }
 
   @override
   insert(HabitEntity habitEntity) {
-    localDataSource.insert(habitEntity);
+    databaseClient.insertHabit(habitEntity);
+  }
+
+  @override
+  Future<List<HabitEntity>> toggleToday(int complete) async {
+    return await databaseClient.toogle(complete);
   }
 }
