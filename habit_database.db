@@ -1,5 +1,8 @@
 {"version":1,"sembast":1}
 {"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":0,"codePoint":57947,"dates":[]}}
-{"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":1706335200000,"codePoint":57947,"dates":[1706335200000]}}
-{"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":0,"codePoint":57947,"dates":[]}}
-{"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":1706335200000,"codePoint":57947,"dates":[1706335200000]}}
+{"key":2,"store":"habit","value":{"title":"Dormir","description":"Hay que dormir temprano","lastDate":1706421600000,"codePoint":58873,"dates":[1706421600000]}}
+{"key":3,"store":"habit","value":{"title":"test","description":"buijijazo","lastDate":0,"codePoint":58136,"dates":[]}}
+{"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":1706421600000,"codePoint":57947,"dates":[1706421600000]}}
+{"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":1706421600000,"codePoint":57947,"dates":[1706248800000,1706421600000]}}
+{"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":1706421600000,"codePoint":57947,"dates":[1706421600000]}}
+{"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":1706421600000,"codePoint":57947,"dates":[1706421600000,1760594400000]}}

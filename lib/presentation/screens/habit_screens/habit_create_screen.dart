@@ -3,9 +3,10 @@ import 'package:gap/gap.dart';
 import 'package:minimal_habit_tracker/data/repositories/habit_repository_impl.dart';
 import 'package:minimal_habit_tracker/domain/entities/habit_entity.dart';
 import 'package:minimal_habit_tracker/presentation/bloc/habit_cubit/habit_cubit.dart';
-import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_list_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+
+import '../../widgets/common/custom_appbar.dart';
 
 class HabitCreateScreen extends StatelessWidget {
   HabitCreateScreen({super.key});
@@ -30,16 +31,8 @@ class HabitCreateScreen extends StatelessWidget {
 
   Scaffold bodyMethod(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const HabitListScreen()),
-              );
-            },
-            icon: const Icon(Icons.close)),
+      appBar: const CustomAppbar(
+        title: Text('Crear habito'),
       ),
       body: Column(
         children: [
@@ -88,10 +81,20 @@ class HabitCreateScreen extends StatelessWidget {
       ),
       floatingActionButton: ElevatedButton.icon(
           onPressed: () {
+            if (_nameController.text.isEmpty ||
+                _descriptionController.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('El nombre o la descripción estan vacios.')));
+              return;
+            }
+
             context.read<HabitCubit>().insert(HabitEntity(
                 title: _nameController.text,
                 description: _descriptionController.text,
                 codePoint: _selectedIcon.value.codePoint));
+
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('¡Guardado con exito!')));
           },
           icon: const Icon(Icons.save),
           label: const Text('Guardar')),

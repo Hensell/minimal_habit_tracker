@@ -26,6 +26,21 @@ class HabitEntity {
     };
   }
 
+  HabitEntity copyWith(
+      {String? newTitle,
+      String? newDescription,
+      int? newCodePoint,
+      List<int>? newDates}) {
+    return HabitEntity(
+      id: id,
+      title: newTitle ?? title,
+      description: newDescription ?? description,
+      lastDate: lastDate,
+      codePoint: newCodePoint ?? codePoint,
+      dates: newDates ?? List<int>.from(dates),
+    );
+  }
+
   static HabitEntity fromMap(Map<String, dynamic> map, int id) {
     return HabitEntity(
       id: id,

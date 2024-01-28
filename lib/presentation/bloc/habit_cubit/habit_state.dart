@@ -10,6 +10,11 @@ final class HabitSuccess extends HabitState {
   HabitSuccess(this.habits);
 }
 
+final class HabitSuccessOne extends HabitState {
+  final HabitEntity habits;
+  HabitSuccessOne(this.habits);
+}
+
 final class HabitLoading extends HabitState {}
 
 final class HabitError extends HabitState {}

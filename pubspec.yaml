@@ -46,6 +46,7 @@ dependencies:
   gap: ^3.0.1
   bloc: ^8.1.2
   meta: ^1.10.0
+  calendar_date_picker2: ^0.5.3
 
 dev_dependencies:
   flutter_test:

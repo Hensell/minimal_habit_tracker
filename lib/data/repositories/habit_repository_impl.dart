@@ -20,4 +20,19 @@ class HabitRepositoryImpl implements HabitRepository {
   Future<List<HabitEntity>> toggleToday(int complete) async {
     return await databaseClient.toogle(complete);
   }
+
+  @override
+  Future<HabitEntity> getOne(int key) async {
+    return await databaseClient.getOne(key);
+  }
+
+  @override
+  Future<HabitEntity> toggleTodayOne(int key) async {
+    return await databaseClient.toogleOne(key);
+  }
+
+  @override
+  Future<HabitEntity> update(HabitEntity habitEntity) async {
+    return await databaseClient.update(habitEntity);
+  }
 }

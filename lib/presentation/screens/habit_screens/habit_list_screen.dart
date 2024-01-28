@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:minimal_habit_tracker/core/utils/functions/get_today.dart';
-import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_update_screen.dart';
+import 'package:minimal_habit_tracker/core/utils/functions/date_utilities.dart';
+import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/repositories/habit_repository_impl.dart';
 import '../../bloc/habit_cubit/habit_cubit.dart';
+
+import '../../widgets/habit_list/box_complete.dart';
 import 'habit_create_screen.dart';
 
 class HabitListScreen extends StatelessWidget {
@@ -47,29 +49,51 @@ class HabitListScreen extends StatelessWidget {
                   itemCount: state.habits.length,
                   itemBuilder: (context, index) {
                     final habit = state.habits[index];
-                    return Card(
-                        child: ListTile(
-                      title: Text(habit.title),
-                      subtitle: Text(habit.description),
-                      leading: Icon(IconData(habit.codePoint,
-                          fontFamily: "MaterialIcons")),
-                      trailing: IconButton.filledTonal(
-                        onPressed: () {
-                          context.read<HabitCubit>().toggle(habit.id!);
-                        },
-                        icon: Icon(habit.lastDate == GetToday.getToday()
-                            ? Icons.check_box
-                            : Icons.check_box_outline_blank),
+
+                    return Container(
+                      padding: const EdgeInsets.all(5),
+                      margin:
+                          const EdgeInsets.only(bottom: 15, left: 5, right: 5),
+                      decoration: BoxDecoration(
+                          color: Colors.black38,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            title: Text(habit.title),
+                            subtitle: Text(habit.description),
+                            leading: Icon(IconData(habit.codePoint,
+                                fontFamily: "MaterialIcons")),
+                            trailing: ElevatedButton.icon(
+                              onPressed: () {
+                                context.read<HabitCubit>().toggle(habit.id!);
+                              },
+                              icon: Icon(
+                                  habit.lastDate == DateUtilities.getToday()
+                                      ? Icons.check_box
+                                      : Icons.check_box_outline_blank),
+                              label: const Text('Hoy'),
+                            ),
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => HabitDetailScreen(
+                                            habitEntity: habit,
+                                          ))));
+                            },
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 120,
+                            child: BoxComplete(
+                              dates: habit.dates,
+                            ),
+                          )
+                        ],
                       ),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                    const HabitUpdateScreen())));
-                      },
-                    ));
-                  })
+                    );
+                  }),
             ]);
           }
 

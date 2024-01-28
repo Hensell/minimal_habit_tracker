@@ -1,4 +1,4 @@
-import 'package:minimal_habit_tracker/core/utils/functions/get_today.dart';
+import 'package:minimal_habit_tracker/core/utils/functions/date_utilities.dart';
 import 'package:minimal_habit_tracker/data/database/database_provider.dart';
 import 'package:minimal_habit_tracker/domain/entities/habit_entity.dart';
 import 'package:sembast/sembast.dart';
@@ -23,16 +23,24 @@ class DatabaseClient {
     }).toList();
   }
 
+  Future<HabitEntity> getOne(int key) async {
+    final db = await DatabaseProvider.database;
+
+    var value = await store.record(key).get(db);
+    return HabitEntity.fromMap(value!, key);
+  }
+
   Future<List<HabitEntity>> toogle(int key) async {
     final db = await DatabaseProvider.database;
     var value = await store.record(key).get(db);
     Object today = value!['lastDate'] ?? 0;
 
     var map = cloneMap(value);
-    map['lastDate'] = today == GetToday.getToday() ? 0 : GetToday.getToday();
+    map['lastDate'] =
+        today == DateUtilities.getToday() ? 0 : DateUtilities.getToday();
 
-    if (!(map['dates'] as List<dynamic>).contains(GetToday.getToday())) {
-      (map['dates'] as List<dynamic>).add(GetToday.getToday());
+    if (!(map['dates'] as List<dynamic>).contains(DateUtilities.getToday())) {
+      (map['dates'] as List<dynamic>).add(DateUtilities.getToday());
     } else {
       (map['dates'] as List<dynamic>).removeLast();
     }
@@ -40,5 +48,33 @@ class DatabaseClient {
     await store.record(key).update(db, map);
 
     return await get();
+  }
+
+  Future<HabitEntity> update(HabitEntity habit) async {
+    final db = await DatabaseProvider.database;
+
+    await store.record(habit.id!).update(db, habit.toMap());
+
+    return await getOne(habit.id!);
+  }
+
+  Future<HabitEntity> toogleOne(int key) async {
+    final db = await DatabaseProvider.database;
+    var value = await store.record(key).get(db);
+    Object today = value!['lastDate'] ?? 0;
+
+    var map = cloneMap(value);
+    map['lastDate'] =
+        today == DateUtilities.getToday() ? 0 : DateUtilities.getToday();
+
+    if (!(map['dates'] as List<dynamic>).contains(DateUtilities.getToday())) {
+      (map['dates'] as List<dynamic>).add(DateUtilities.getToday());
+    } else {
+      (map['dates'] as List<dynamic>).removeLast();
+    }
+
+    await store.record(key).update(db, map);
+
+    return await getOne(key);
   }
 }
