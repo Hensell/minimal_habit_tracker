@@ -2,9 +2,9 @@ class HabitEntity {
   final int? id;
   final String title;
   final String description;
-  final String lastDate;
+  final int lastDate;
   final int codePoint;
-  final Map<String, bool> dates;
+  final List<int> dates;
 
   HabitEntity(
       {required this.title,
@@ -12,9 +12,9 @@ class HabitEntity {
       required this.codePoint,
       this.id,
       lastDate,
-      Map<String, bool>? dates})
-      : dates = dates ?? {},
-        lastDate = lastDate ?? '';
+      dates})
+      : dates = dates ?? [],
+        lastDate = lastDate ?? 0;
 
   Map<String, dynamic> toMap() {
     return {
@@ -33,7 +33,7 @@ class HabitEntity {
       description: map["description"],
       lastDate: map["lastDate"],
       codePoint: map["codePoint"],
-      dates: (map["dates"] as Map<String, dynamic>).cast<String, bool>(),
+      dates: List<int>.from(map["dates"]),
     );
   }
 }

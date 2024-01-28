@@ -1,13 +1,8 @@
 class GetToday {
-  static String getToday() {
-    DateTime fechaActual = DateTime.now();
-
-    int day = fechaActual.day;
-    int month = fechaActual.month;
-    int year = fechaActual.year;
-
-    String today = "$day/$month/$year";
-
-    return today;
+  static int getToday() {
+    DateTime currentDate = DateTime.now();
+    DateTime dateWithoutTime =
+        DateTime(currentDate.year, currentDate.month, currentDate.day);
+    return dateWithoutTime.millisecondsSinceEpoch;
   }
 }

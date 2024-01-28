@@ -10,13 +10,6 @@ import 'package:provider/provider.dart';
 class HabitCreateScreen extends StatelessWidget {
   HabitCreateScreen({super.key});
 
-  final List<IconData> _icons = [
-    Icons.home,
-    Icons.favorite,
-    Icons.star,
-    Icons.shopping_cart,
-  ];
-
   final ValueNotifier<IconData> _selectedIcon =
       ValueNotifier<IconData>(Icons.home);
   final TextEditingController _nameController = TextEditingController();
@@ -68,12 +61,24 @@ class HabitCreateScreen extends StatelessWidget {
                 return DropdownButton<IconData>(
                   isExpanded: true,
                   value: value,
-                  items: _icons.map((IconData icon) {
-                    return DropdownMenuItem<IconData>(
-                      value: icon,
-                      child: Icon(icon),
-                    );
-                  }).toList(),
+                  items: const [
+                    DropdownMenuItem(
+                      value: Icons.home,
+                      child: Icon(Icons.home),
+                    ),
+                    DropdownMenuItem(
+                      value: Icons.favorite,
+                      child: Icon(Icons.favorite),
+                    ),
+                    DropdownMenuItem(
+                      value: Icons.star,
+                      child: Icon(Icons.star),
+                    ),
+                    DropdownMenuItem(
+                      value: Icons.shopping_cart,
+                      child: Icon(Icons.shopping_cart),
+                    )
+                  ],
                   onChanged: (IconData? newValue) {
                     _selectedIcon.value = newValue!;
                   },
