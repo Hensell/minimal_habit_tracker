@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:minimal_habit_tracker/core/utils/functions/date_utilities.dart';
+import 'package:minimal_habit_tracker/core/utils/date_utilities.dart';
 import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_detail_screen.dart';
 import 'package:provider/provider.dart';
 

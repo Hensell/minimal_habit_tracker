@@ -1,8 +1,10 @@
 {"version":1,"sembast":1}
-{"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":0,"codePoint":57947,"dates":[]}}
-{"key":2,"store":"habit","value":{"title":"Dormir","description":"Hay que dormir temprano","lastDate":1706421600000,"codePoint":58873,"dates":[1706421600000]}}
 {"key":3,"store":"habit","value":{"title":"test","description":"buijijazo","lastDate":0,"codePoint":58136,"dates":[]}}
-{"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":1706421600000,"codePoint":57947,"dates":[1706421600000]}}
-{"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":1706421600000,"codePoint":57947,"dates":[1706248800000,1706421600000]}}
-{"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":1706421600000,"codePoint":57947,"dates":[1706421600000]}}
-{"key":1,"store":"habit","value":{"title":"Programacion","description":"Hay que programar","lastDate":1706421600000,"codePoint":57947,"dates":[1706421600000,1760594400000]}}
+{"key":4,"store":"habit","value":{"title":"test","description":"test","lastDate":0,"codePoint":58136,"dates":[]}}
+{"key":5,"store":"habit","value":{"title":"asdf","description":"asdf","lastDate":0,"codePoint":58780,"dates":[]}}
+{"key":6,"store":"habit","value":{"title":"asdfasdf","description":"asdf","lastDate":0,"codePoint":58780,"dates":[]}}
+{"key":7,"store":"habit","value":{"title":"asdfasdf","description":"asdfasdf","lastDate":0,"codePoint":58780,"dates":[]}}
+{"key":3,"deleted":true,"store":"habit"}
+{"key":6,"deleted":true,"store":"habit"}
+{"key":4,"deleted":true,"store":"habit"}
+{"key":5,"deleted":true,"store":"habit"}

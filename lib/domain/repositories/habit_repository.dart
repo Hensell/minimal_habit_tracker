@@ -7,4 +7,5 @@ abstract class HabitRepository {
   Future<HabitEntity> getOne(int key);
   Future<HabitEntity> toggleTodayOne(int key);
   Future<HabitEntity> update(HabitEntity habitEntity);
+  Future<int> delete(HabitEntity habitEntity);
 }

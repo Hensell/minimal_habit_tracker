@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:minimal_habit_tracker/domain/entities/habit_entity.dart';
 import 'package:provider/provider.dart';
-import '../../../core/utils/functions/date_utilities.dart';
+import '../../../core/utils/date_utilities.dart';
+import '../../../core/utils/dialog_utils.dart';
 import '../../../data/repositories/habit_repository_impl.dart';
 import '../../bloc/habit_cubit/habit_cubit.dart';
 import '../../widgets/common/custom_appbar.dart';
+import 'habit_list_screen.dart';
 
 class HabitDetailScreen extends StatelessWidget {
   const HabitDetailScreen({super.key, required this.habitEntity});
@@ -58,6 +60,29 @@ class HabitDetailScreen extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
+            ElevatedButton.icon(
+                onPressed: () => DialogUtils.deleteDialog(
+                    context: context,
+                    onDelete: () async {
+                      await context
+                          .read<HabitCubit>()
+                          .delete(habit)
+                          .then((value) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('El registro fue eliminado')));
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HabitListScreen()),
+                        );
+                      });
+                    }),
+                icon: const Icon(
+                  Icons.edit,
+                  color: Colors.redAccent,
+                ),
+                label: const Text('Eliminar')),
             editMethod(nameController, descriptionController, selectedIcon,
                 habit, context),
             ListTile(

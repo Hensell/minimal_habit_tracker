@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minimal_habit_tracker/core/utils/functions/date_utilities.dart';
+import 'package:minimal_habit_tracker/core/utils/date_utilities.dart';
 
 class BoxComplete extends StatelessWidget {
   const BoxComplete({super.key, required this.dates});

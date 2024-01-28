@@ -40,4 +40,9 @@ class HabitCubit extends Cubit<HabitState> {
     final updatedHabit = await _habitRepository.toggleTodayOne(key);
     emit(HabitSuccessOne(updatedHabit));
   }
+
+  Future<int> delete(HabitEntity habitEntity) async {
+    final key = await _habitRepository.delete(habitEntity);
+    return key;
+  }
 }

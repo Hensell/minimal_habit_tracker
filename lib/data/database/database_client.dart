@@ -1,4 +1,4 @@
-import 'package:minimal_habit_tracker/core/utils/functions/date_utilities.dart';
+import 'package:minimal_habit_tracker/core/utils/date_utilities.dart';
 import 'package:minimal_habit_tracker/data/database/database_provider.dart';
 import 'package:minimal_habit_tracker/domain/entities/habit_entity.dart';
 import 'package:sembast/sembast.dart';
@@ -56,6 +56,14 @@ class DatabaseClient {
     await store.record(habit.id!).update(db, habit.toMap());
 
     return await getOne(habit.id!);
+  }
+
+  Future<int> delete(HabitEntity habit) async {
+    final db = await DatabaseProvider.database;
+
+    final key = await store.record(habit.id!).delete(db);
+
+    return key ?? 0;
   }
 
   Future<HabitEntity> toogleOne(int key) async {

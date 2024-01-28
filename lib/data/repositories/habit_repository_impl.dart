@@ -35,4 +35,9 @@ class HabitRepositoryImpl implements HabitRepository {
   Future<HabitEntity> update(HabitEntity habitEntity) async {
     return await databaseClient.update(habitEntity);
   }
+
+  @override
+  Future<int> delete(HabitEntity habitEntity) async {
+    return await databaseClient.delete(habitEntity);
+  }
 }
