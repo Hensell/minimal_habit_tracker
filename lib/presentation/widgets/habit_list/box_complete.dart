@@ -8,7 +8,7 @@ class BoxComplete extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      scrollDirection: Axis.horizontal,
+      scrollDirection: Axis.vertical,
       slivers: [
         SliverGrid.builder(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(

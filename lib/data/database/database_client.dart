@@ -7,9 +7,11 @@ import 'package:sembast/utils/value_utils.dart';
 class DatabaseClient {
   final store = intMapStoreFactory.store("habit");
 
-  Future<void> insertHabit(HabitEntity habitEntity) async {
+  Future<List<HabitEntity>> insertHabit(HabitEntity habitEntity) async {
     final db = await DatabaseProvider.database;
     await store.add(db, habitEntity.toMap());
+
+    return await get();
   }
 
   Future<List<HabitEntity>> get() async {

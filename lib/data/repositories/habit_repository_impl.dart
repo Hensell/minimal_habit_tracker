@@ -12,8 +12,8 @@ class HabitRepositoryImpl implements HabitRepository {
   }
 
   @override
-  insert(HabitEntity habitEntity) {
-    databaseClient.insertHabit(habitEntity);
+  Future<List<HabitEntity>> insert(HabitEntity habitEntity) async {
+    return await databaseClient.insertHabit(habitEntity);
   }
 
   @override

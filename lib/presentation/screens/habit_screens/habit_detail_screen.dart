@@ -37,7 +37,7 @@ class HabitDetailScreen extends StatelessWidget {
     );
   }
 
-  Scaffold bodyMethod(BuildContext context, HabitSuccessOne state) {
+  PopScope bodyMethod(BuildContext context, HabitSuccessOne state) {
     final habit = state.habits;
 
     final ValueNotifier<IconData> selectedIcon =
@@ -45,81 +45,67 @@ class HabitDetailScreen extends StatelessWidget {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController descriptionController = TextEditingController();
 
-    return Scaffold(
-      appBar: CustomAppbar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('${habit.title} '),
-            Icon(IconData(habit.codePoint, fontFamily: "MaterialIcons")),
-          ],
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HabitListScreen()),
+        );
+      },
+      child: Scaffold(
+        appBar: CustomAppbar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('${habit.title} '),
+              Icon(IconData(habit.codePoint, fontFamily: "MaterialIcons")),
+            ],
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-          child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: [
-            ElevatedButton.icon(
-                onPressed: () => DialogUtils.deleteDialog(
-                    context: context,
-                    onDelete: () async {
-                      await context
-                          .read<HabitCubit>()
-                          .delete(habit)
-                          .then((value) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('El registro fue eliminado')));
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HabitListScreen()),
-                        );
-                      });
-                    }),
-                icon: const Icon(
-                  Icons.edit,
-                  color: Colors.redAccent,
-                ),
-                label: const Text('Eliminar')),
-            editMethod(nameController, descriptionController, selectedIcon,
-                habit, context),
-            ListTile(
-              title: Text(habit.title),
-              subtitle: Text(habit.description),
-              leading:
-                  Icon(IconData(habit.codePoint, fontFamily: "MaterialIcons")),
-              trailing: IconButton.filledTonal(
-                onPressed: () {
-                  context.read<HabitCubit>().toggleOne(habit.id!);
-                },
-                icon: Icon(habit.lastDate == DateUtilities.getToday()
-                    ? Icons.check_box
-                    : Icons.check_box_outline_blank),
-              ),
-            ),
-            SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 500,
-                child: CalendarDatePicker2(
-                  config: CalendarDatePicker2Config(
-                      calendarType: CalendarDatePicker2Type.multi),
-                  value: DateUtilities.millisecondsToDate(habit.dates),
-                  onValueChanged: (dates) {
-                    List<DateTime> nonNullableDates =
-                        dates.whereType<DateTime>().toList();
-
-                    HabitEntity newHabit = habit.copyWith(
-                        newDates:
-                            DateUtilities.dateToMilliseconds(nonNullableDates));
-
-                    context.read<HabitCubit>().update(newHabit);
+        body: SingleChildScrollView(
+            child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              editMethod(nameController, descriptionController, selectedIcon,
+                  habit, context),
+              ListTile(
+                title: Text(habit.title),
+                subtitle: Text(habit.description),
+                leading: Icon(
+                    IconData(habit.codePoint, fontFamily: "MaterialIcons")),
+                trailing: IconButton.filledTonal(
+                  onPressed: () {
+                    context.read<HabitCubit>().toggleOne(habit.id!);
                   },
-                ))
-          ],
-        ),
-      )),
+                  icon: Icon(habit.lastDate == DateUtilities.getToday()
+                      ? Icons.check_box
+                      : Icons.check_box_outline_blank),
+                ),
+              ),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 500,
+                  child: CalendarDatePicker2(
+                    config: CalendarDatePicker2Config(
+                        calendarType: CalendarDatePicker2Type.multi),
+                    value: DateUtilities.millisecondsToDate(habit.dates),
+                    onValueChanged: (dates) {
+                      List<DateTime> nonNullableDates =
+                          dates.whereType<DateTime>().toList();
+
+                      HabitEntity newHabit = habit.copyWith(
+                          newDates: DateUtilities.dateToMilliseconds(
+                              nonNullableDates));
+
+                      context.read<HabitCubit>().update(newHabit);
+                    },
+                  ))
+            ],
+          ),
+        )),
+      ),
     );
   }
 
@@ -134,11 +120,37 @@ class HabitDetailScreen extends StatelessWidget {
         ExpansionPanelRadio(
             canTapOnHeader: true,
             headerBuilder: (BuildContext context, bool isExpanded) {
-              return const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'Editar información',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    IconButton.filled(
+                        highlightColor: Colors.redAccent,
+                        onPressed: () => DialogUtils.deleteDialog(
+                            context: context,
+                            onDelete: () async {
+                              await context
+                                  .read<HabitCubit>()
+                                  .delete(habit)
+                                  .then((value) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text('El registro fue eliminado')));
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const HabitListScreen()),
+                                );
+                              });
+                            }),
+                        icon: const Icon(Icons.delete)),
+                    const Gap(10),
+                    const CircleAvatar(
+                      child: Icon(Icons.edit),
+                    ),
+                  ],
                 ),
               );
             },
