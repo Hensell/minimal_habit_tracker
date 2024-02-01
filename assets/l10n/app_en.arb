@@ -9,5 +9,65 @@
   "@addHabit": {
     "description": "To add habit."
   }
+,
 
+"loading" :"Loading...",
+"@Loading" : {
+"description": "Loading state."
+},
+
+"today": "Today",
+"@Today" :{
+  "description": "Today."
+},
+
+"toggle": "Toggle",
+"@toggle":{
+  "description": "To toggle."
+},
+
+"habitName": "Habit name",
+"@brandName" : {
+  "description": "Habit name."
+},
+"habitDescription" : "Habit description",
+"@habitDescription":{
+  "description": "Habit description."
+},
+
+"savedSuccessfully" :" Saved successfully!",
+"@savedSuccessfully":{
+  "description": "Saved successfully messeage."
+},
+
+"saveHabit" : "Save habit",
+"@saveHabit":{
+  "description": "To save habit."
+},
+"deleteHabit": "Delete habit",
+"@deleteHabit": {
+  "description": "To delete habit."
+}
+,
+"habitDeleted": "The habit has been deleted",
+"@habitDeleted":{
+  "description": "The habit has been deleted messeage."
+},
+
+"emptyNameOrDescription" : "The name or description is empty",
+"@emptyNameOrDescription":{
+  "description": "The name or description is empty messeage."
+},
+"saveChanges": "Save changes",
+"@saveChanges":{
+  "description": "To save changes."
+},
+"confirmDeletion": "Are you sure you want to delete this habit? This action cannot be undone.",
+"@confirmDeletion":   {
+  "description": "To confirm a deletion."
+},
+"dontDelete" : "Don´t delete",
+"@dontDelete":{
+  "description": "To Don´t delete a messeage."
+}
 }

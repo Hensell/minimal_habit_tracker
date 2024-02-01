@@ -7,7 +7,6 @@ import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_d
 import 'package:provider/provider.dart';
 import '../../../data/repositories/habit_repository_impl.dart';
 import '../../bloc/habit_cubit/habit_cubit.dart';
-
 import '../../widgets/habit_list/box_complete.dart';
 
 class HabitListScreen extends StatelessWidget {
@@ -22,8 +21,8 @@ class HabitListScreen extends StatelessWidget {
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
           if (state is HabitLoading) {
-            const Center(
-              child: Text('Cargando'),
+            return CircularProgressIndicator(
+              semanticsLabel: AppLocalizations.of(context)!.loading,
             );
           } else if (state is HabitSuccess) {
             return Scaffold(
@@ -59,7 +58,8 @@ class HabitListScreen extends StatelessWidget {
                                     habit.lastDate == DateUtilities.getToday()
                                         ? Icons.check_box
                                         : Icons.check_box_outline_blank),
-                                label: const Text('Hoy'),
+                                label:
+                                    Text(AppLocalizations.of(context)!.today),
                               ),
                               onTap: () {
                                 Navigator.pushReplacement(
@@ -78,11 +78,11 @@ class HabitListScreen extends StatelessWidget {
                                   canTapOnHeader: true,
                                   headerBuilder:
                                       (BuildContext context, bool isExpanded) {
-                                    return const Padding(
-                                      padding: EdgeInsets.all(8.0),
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        'Mostrar / Ocultar',
-                                        style: TextStyle(
+                                        AppLocalizations.of(context)!.toggle,
+                                        style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                         textAlign: TextAlign.center,
@@ -116,8 +116,8 @@ class HabitListScreen extends StatelessWidget {
                   child: const Icon(Icons.add)),
             );
           }
-          return const Center(
-            child: Text('Cargando'),
+          return Center(
+            child: Text(AppLocalizations.of(context)!.loading),
           );
         },
       ),

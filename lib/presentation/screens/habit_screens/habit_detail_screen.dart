@@ -10,6 +10,7 @@ import '../../../data/repositories/habit_repository_impl.dart';
 import '../../bloc/habit_cubit/habit_cubit.dart';
 import '../../widgets/common/custom_appbar.dart';
 import 'habit_list_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HabitDetailScreen extends StatelessWidget {
   const HabitDetailScreen({super.key, required this.habitEntity});
@@ -24,14 +25,16 @@ class HabitDetailScreen extends StatelessWidget {
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
           if (state is HabitLoading) {
-            const Center(
-              child: Text('Cargando'),
+            return CircularProgressIndicator(
+              semanticsLabel: AppLocalizations.of(context)!.loading,
             );
           } else if (state is HabitSuccessOne) {
             return bodyMethod(context, state);
           }
 
-          return const Material(child: Text('Error'));
+          return CircularProgressIndicator(
+            semanticsLabel: AppLocalizations.of(context)!.loading,
+          );
         },
       ),
     );
@@ -134,9 +137,10 @@ class HabitDetailScreen extends StatelessWidget {
                                   .delete(habit)
                                   .then((value) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('El registro fue eliminado')));
+                                    SnackBar(
+                                        content: Text(
+                                            AppLocalizations.of(context)!
+                                                .habitDeleted)));
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -159,14 +163,17 @@ class HabitDetailScreen extends StatelessWidget {
               children: [
                 TextFormField(
                   controller: nameController,
-                  decoration: const InputDecoration(
-                      filled: true, label: Text('Nombre')),
+                  decoration: InputDecoration(
+                      filled: true,
+                      label: Text(AppLocalizations.of(context)!.habitName)),
                 ),
                 const Gap(20),
                 TextFormField(
                   controller: descriptionController,
-                  decoration: const InputDecoration(
-                      filled: true, label: Text('Descripción')),
+                  decoration: InputDecoration(
+                      filled: true,
+                      label:
+                          Text(AppLocalizations.of(context)!.habitDescription)),
                 ),
                 const Gap(20),
                 ValueListenableBuilder<IconData>(
@@ -202,9 +209,9 @@ class HabitDetailScreen extends StatelessWidget {
                     onPressed: () {
                       if (nameController.text.isEmpty ||
                           descriptionController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text(
-                                'El nombre o la descripción estan vacios.')));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(AppLocalizations.of(context)!
+                                .emptyNameOrDescription)));
                         return;
                       }
 
@@ -214,11 +221,12 @@ class HabitDetailScreen extends StatelessWidget {
                           newCodePoint: selectedIcon.value.codePoint);
                       context.read<HabitCubit>().update(newHabit);
 
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('¡Guardado con exito!')));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(AppLocalizations.of(context)!
+                              .savedSuccessfully)));
                     },
                     icon: const Icon(Icons.edit),
-                    label: const Text('Actualizar')),
+                    label: Text(AppLocalizations.of(context)!.saveChanges)),
               ],
             ),
             value: 'panel1')

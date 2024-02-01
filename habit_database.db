@@ -5,3 +5,4 @@
 {"key":10,"store":"habit","value":{"title":"testasfdasdfasdf","description":"testasdfasdf","lastDate":0,"codePoint":58136,"dates":[]}}
 {"key":11,"store":"habit","value":{"title":"aa","description":"aa","lastDate":0,"codePoint":58136,"dates":[]}}
 {"key":8,"store":"habit","value":{"title":"test","description":"test","lastDate":0,"codePoint":58136,"dates":[]}}
+{"key":7,"store":"habit","value":{"title":"asdfasdf","description":"asdfasdf","lastDate":0,"codePoint":58780,"dates":[1704088800000,1704175200000,1704261600000,1704348000000,1704434400000,1704520800000,1704607200000,1704693600000,1704780000000,1704866400000,1704952800000,1705039200000,1705125600000,1705212000000,1705298400000,1705471200000,1705557600000,1706508000000]}}

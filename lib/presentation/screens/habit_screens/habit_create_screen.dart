@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../../domain/entities/habit_entity.dart';
 import 'habit_list_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HabitCreateScreen extends StatelessWidget {
   HabitCreateScreen({super.key});
@@ -39,19 +40,22 @@ class HabitCreateScreen extends StatelessWidget {
         );
       },
       child: Scaffold(
-        appBar: const CustomAppbar(title: Text('Crear marca')),
+        appBar:
+            CustomAppbar(title: Text(AppLocalizations.of(context)!.addHabit)),
         body: Column(
           children: [
             TextFormField(
               controller: _nameController,
-              decoration:
-                  const InputDecoration(filled: true, label: Text('Nombre')),
+              decoration: InputDecoration(
+                  filled: true,
+                  label: Text(AppLocalizations.of(context)!.habitName)),
             ),
             const Gap(20),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
-                  filled: true, label: Text('Descripción')),
+              decoration: InputDecoration(
+                  filled: true,
+                  label: Text(AppLocalizations.of(context)!.habitDescription)),
             ),
             const Gap(20),
             ValueListenableBuilder<IconData>(
@@ -88,18 +92,24 @@ class HabitCreateScreen extends StatelessWidget {
         bottomNavigationBar: ElevatedButton.icon(
             onPressed: () {
               if (_nameController.text.isEmpty ||
-                  _descriptionController.text.isEmpty) return;
+                  _descriptionController.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                        AppLocalizations.of(context)!.emptyNameOrDescription)));
+                return;
+              }
 
               context.read<HabitCubit>().insert(HabitEntity(
                   title: _nameController.text,
                   description: _descriptionController.text,
                   codePoint: _selectedIcon.value.codePoint));
 
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('¡Guardado con exito!')));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content:
+                      Text(AppLocalizations.of(context)!.savedSuccessfully)));
             },
             icon: const Icon(Icons.save),
-            label: const Text('Guardar')),
+            label: Text(AppLocalizations.of(context)!.saveHabit)),
       ),
     );
   }
