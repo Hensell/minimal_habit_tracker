@@ -50,17 +50,15 @@ class HabitListScreen extends StatelessWidget {
                               subtitle: Text(habit.description),
                               leading: Icon(IconData(habit.codePoint,
                                   fontFamily: "MaterialIcons")),
-                              trailing: ElevatedButton.icon(
-                                onPressed: () {
-                                  context.read<HabitCubit>().toggle(habit.id!);
-                                },
-                                icon: Icon(
-                                    habit.lastDate == DateUtilities.getToday()
-                                        ? Icons.check_box
-                                        : Icons.check_box_outline_blank),
-                                label:
-                                    Text(AppLocalizations.of(context)!.today),
-                              ),
+                              trailing: Switch(
+                                  activeColor: Colors.greenAccent,
+                                  value: habit.lastDate ==
+                                      DateUtilities.getToday(),
+                                  onChanged: (value) {
+                                    context
+                                        .read<HabitCubit>()
+                                        .toggle(habit.id!);
+                                  }),
                               onTap: () {
                                 Navigator.pushReplacement(
                                     context,

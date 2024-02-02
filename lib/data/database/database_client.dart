@@ -35,16 +35,18 @@ class DatabaseClient {
   Future<List<HabitEntity>> toogle(int key) async {
     final db = await DatabaseProvider.database;
     var value = await store.record(key).get(db);
-    Object today = value!['lastDate'] ?? 0;
 
-    var map = cloneMap(value);
-    map['lastDate'] =
-        today == DateUtilities.getToday() ? 0 : DateUtilities.getToday();
+    var map = cloneMap(value!);
 
-    if (!(map['dates'] as List<dynamic>).contains(DateUtilities.getToday())) {
-      (map['dates'] as List<dynamic>).add(DateUtilities.getToday());
-    } else {
+    bool lastDayIsToday =
+        (map['dates'] as List<dynamic>).contains(DateUtilities.getToday());
+
+    if (lastDayIsToday) {
       (map['dates'] as List<dynamic>).removeLast();
+      map['lastDate'] = 0;
+    } else {
+      (map['dates'] as List<dynamic>).add(DateUtilities.getToday());
+      map['lastDate'] = DateUtilities.getToday();
     }
 
     await store.record(key).update(db, map);

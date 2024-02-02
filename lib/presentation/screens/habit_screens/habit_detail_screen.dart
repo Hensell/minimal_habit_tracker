@@ -69,19 +69,18 @@ class HabitDetailScreen extends StatelessWidget {
               subtitle: Text(habit.description),
               leading:
                   Icon(IconData(habit.codePoint, fontFamily: "MaterialIcons")),
-              trailing: IconButton.filledTonal(
-                onPressed: () {
-                  context.read<HabitCubit>().toggleOne(habit.id!);
-                },
-                icon: Icon(habit.lastDate == DateUtilities.getToday()
-                    ? Icons.check_box
-                    : Icons.check_box_outline_blank),
-              ),
+              trailing: Switch(
+                  activeColor: Colors.greenAccent,
+                  value: habit.lastDate == DateUtilities.getToday(),
+                  onChanged: (value) {
+                    context.read<HabitCubit>().toggleOne(habit.id!);
+                  }),
             ),
             SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 500,
                 child: CalendarDatePicker2(
+                  displayedMonthDate: DateTime.now(),
                   config: CalendarDatePicker2Config(
                       calendarType: CalendarDatePicker2Type.multi),
                   value: DateUtilities.millisecondsToDate(habit.dates),
