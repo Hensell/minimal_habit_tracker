@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:minimal_habit_tracker/domain/entities/habit_entity.dart';
+import 'package:minimal_habit_tracker/presentation/widgets/common/custom_scaffold.dart';
+import 'package:minimal_habit_tracker/presentation/widgets/common/textfields_column_widget.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/date_utilities.dart';
 import '../../../core/utils/dialog_utils.dart';
 import '../../../data/repositories/habit_repository_impl.dart';
 import '../../bloc/habit_cubit/habit_cubit.dart';
-import '../../widgets/common/custom_appbar.dart';
 import 'habit_list_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -40,7 +41,7 @@ class HabitDetailScreen extends StatelessWidget {
     );
   }
 
-  PopScope bodyMethod(BuildContext context, HabitSuccessOne state) {
+  bodyMethod(BuildContext context, HabitSuccessOne state) {
     final habit = state.habits;
 
     final ValueNotifier<IconData> selectedIcon =
@@ -48,67 +49,56 @@ class HabitDetailScreen extends StatelessWidget {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController descriptionController = TextEditingController();
 
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HabitListScreen()),
-        );
-      },
-      child: Scaffold(
-        appBar: CustomAppbar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('${habit.title} '),
-              Icon(IconData(habit.codePoint, fontFamily: "MaterialIcons")),
-            ],
-          ),
-        ),
-        body: SingleChildScrollView(
-            child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              editMethod(nameController, descriptionController, selectedIcon,
-                  habit, context),
-              ListTile(
-                title: Text(habit.title),
-                subtitle: Text(habit.description),
-                leading: Icon(
-                    IconData(habit.codePoint, fontFamily: "MaterialIcons")),
-                trailing: IconButton.filledTonal(
-                  onPressed: () {
-                    context.read<HabitCubit>().toggleOne(habit.id!);
-                  },
-                  icon: Icon(habit.lastDate == DateUtilities.getToday()
-                      ? Icons.check_box
-                      : Icons.check_box_outline_blank),
-                ),
-              ),
-              SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 500,
-                  child: CalendarDatePicker2(
-                    config: CalendarDatePicker2Config(
-                        calendarType: CalendarDatePicker2Type.multi),
-                    value: DateUtilities.millisecondsToDate(habit.dates),
-                    onValueChanged: (dates) {
-                      List<DateTime> nonNullableDates =
-                          dates.whereType<DateTime>().toList();
-
-                      HabitEntity newHabit = habit.copyWith(
-                          newDates: DateUtilities.dateToMilliseconds(
-                              nonNullableDates));
-
-                      context.read<HabitCubit>().update(newHabit);
-                    },
-                  ))
-            ],
-          ),
-        )),
+    return CustomScaffold(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('${habit.title} '),
+          Icon(IconData(habit.codePoint, fontFamily: "MaterialIcons")),
+        ],
       ),
+      body: SingleChildScrollView(
+          child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            editMethod(nameController, descriptionController, selectedIcon,
+                habit, context),
+            ListTile(
+              title: Text(habit.title),
+              subtitle: Text(habit.description),
+              leading:
+                  Icon(IconData(habit.codePoint, fontFamily: "MaterialIcons")),
+              trailing: IconButton.filledTonal(
+                onPressed: () {
+                  context.read<HabitCubit>().toggleOne(habit.id!);
+                },
+                icon: Icon(habit.lastDate == DateUtilities.getToday()
+                    ? Icons.check_box
+                    : Icons.check_box_outline_blank),
+              ),
+            ),
+            SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 500,
+                child: CalendarDatePicker2(
+                  config: CalendarDatePicker2Config(
+                      calendarType: CalendarDatePicker2Type.multi),
+                  value: DateUtilities.millisecondsToDate(habit.dates),
+                  onValueChanged: (dates) {
+                    List<DateTime> nonNullableDates =
+                        dates.whereType<DateTime>().toList();
+
+                    HabitEntity newHabit = habit.copyWith(
+                        newDates:
+                            DateUtilities.dateToMilliseconds(nonNullableDates));
+
+                    context.read<HabitCubit>().update(newHabit);
+                  },
+                ))
+          ],
+        ),
+      )),
     );
   }
 
@@ -161,50 +151,10 @@ class HabitDetailScreen extends StatelessWidget {
             body: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                      filled: true,
-                      label: Text(AppLocalizations.of(context)!.habitName)),
-                ),
-                const Gap(20),
-                TextFormField(
-                  controller: descriptionController,
-                  decoration: InputDecoration(
-                      filled: true,
-                      label:
-                          Text(AppLocalizations.of(context)!.habitDescription)),
-                ),
-                const Gap(20),
-                ValueListenableBuilder<IconData>(
-                    valueListenable: selectedIcon,
-                    builder: (context, value, _) {
-                      return DropdownButton<IconData>(
-                        isExpanded: true,
-                        value: value,
-                        items: const [
-                          DropdownMenuItem(
-                            value: Icons.home,
-                            child: Icon(Icons.home),
-                          ),
-                          DropdownMenuItem(
-                            value: Icons.favorite,
-                            child: Icon(Icons.favorite),
-                          ),
-                          DropdownMenuItem(
-                            value: Icons.star,
-                            child: Icon(Icons.star),
-                          ),
-                          DropdownMenuItem(
-                            value: Icons.shopping_cart,
-                            child: Icon(Icons.shopping_cart),
-                          )
-                        ],
-                        onChanged: (IconData? newValue) {
-                          selectedIcon.value = newValue!;
-                        },
-                      );
-                    }),
+                TextfieldsColumnWidget(
+                    nameController: nameController,
+                    descriptionController: descriptionController,
+                    selectedIcon: selectedIcon),
                 ElevatedButton.icon(
                     onPressed: () {
                       if (nameController.text.isEmpty ||

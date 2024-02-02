@@ -12,33 +12,25 @@ class BoxComplete extends StatelessWidget {
       slivers: [
         SliverGrid.builder(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 20),
+                maxCrossAxisExtent: 30),
             itemCount: 365,
             itemBuilder: (context, index) {
               DateTime fecha =
                   DateUtilities.firstDayOfTheYear().add(Duration(days: index));
 
-              if (dates.contains(fecha.millisecondsSinceEpoch)) {
-                return Container(
-                  width: 12,
-                  height: 12,
-                  margin: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
-                    color: Colors.greenAccent,
-                  ),
-                );
-              } else {
-                return Container(
-                  width: 12,
-                  height: 12,
-                  margin: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
-                    color: Colors.greenAccent.withOpacity(0.5),
-                  ),
-                );
-              }
+              return AnimatedContainer(
+                width: 20,
+                height: 20,
+                margin: const EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: dates.contains(fecha.millisecondsSinceEpoch)
+                      ? Colors.greenAccent
+                      : Colors.green.withOpacity(0.5),
+                ),
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInCubic,
+              );
             })
       ],
     );
