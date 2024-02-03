@@ -48,10 +48,13 @@ class HabitListScreen extends StatelessWidget {
                             ListTile(
                               title: Text(habit.title),
                               subtitle: Text(habit.description),
-                              leading: Icon(IconData(habit.codePoint,
-                                  fontFamily: "MaterialIcons")),
+                              leading: Icon(
+                                IconData(habit.codePoint,
+                                    fontFamily: "MaterialIcons"),
+                                color: Color(habit.color),
+                              ),
                               trailing: Switch(
-                                  activeColor: Colors.greenAccent,
+                                  activeColor: Color(habit.color),
                                   value: habit.lastDate ==
                                       DateUtilities.getToday(),
                                   onChanged: (value) {
@@ -91,6 +94,7 @@ class HabitListScreen extends StatelessWidget {
                                     height: 150,
                                     child: BoxComplete(
                                       dates: habit.dates,
+                                      color: habit.color,
                                     ),
                                   ),
                                   value: 'panel',

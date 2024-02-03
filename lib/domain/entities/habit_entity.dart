@@ -5,6 +5,7 @@ class HabitEntity {
   final int lastDate;
   final int codePoint;
   final List<int> dates;
+  final int color;
 
   HabitEntity(
       {required this.title,
@@ -12,9 +13,11 @@ class HabitEntity {
       required this.codePoint,
       this.id,
       lastDate,
-      dates})
+      dates,
+      color})
       : dates = dates ?? [],
-        lastDate = lastDate ?? 0;
+        lastDate = lastDate ?? 0,
+        color = color ?? 4285132974;
 
   Map<String, dynamic> toMap() {
     return {
@@ -23,6 +26,7 @@ class HabitEntity {
       "lastDate": lastDate,
       "codePoint": codePoint,
       "dates": dates,
+      "color": color
     };
   }
 
@@ -30,25 +34,26 @@ class HabitEntity {
       {String? newTitle,
       String? newDescription,
       int? newCodePoint,
-      List<int>? newDates}) {
+      List<int>? newDates,
+      int? newColor}) {
     return HabitEntity(
-      id: id,
-      title: newTitle ?? title,
-      description: newDescription ?? description,
-      lastDate: lastDate,
-      codePoint: newCodePoint ?? codePoint,
-      dates: newDates ?? List<int>.from(dates),
-    );
+        id: id,
+        title: newTitle ?? title,
+        description: newDescription ?? description,
+        lastDate: lastDate,
+        codePoint: newCodePoint ?? codePoint,
+        dates: newDates ?? List<int>.from(dates),
+        color: newColor ?? color);
   }
 
   static HabitEntity fromMap(Map<String, dynamic> map, int id) {
     return HabitEntity(
-      id: id,
-      title: map["title"],
-      description: map["description"],
-      lastDate: map["lastDate"],
-      codePoint: map["codePoint"],
-      dates: List<int>.from(map["dates"]),
-    );
+        id: id,
+        title: map["title"],
+        description: map["description"],
+        lastDate: map["lastDate"],
+        codePoint: map["codePoint"],
+        dates: List<int>.from(map["dates"]),
+        color: map["color"]);
   }
 }

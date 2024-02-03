@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:minimal_habit_tracker/core/utils/date_utilities.dart';
 
 class BoxComplete extends StatelessWidget {
-  const BoxComplete({super.key, required this.dates});
+  const BoxComplete({super.key, required this.dates, required this.color});
   final List<int> dates;
+  final int color;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +26,8 @@ class BoxComplete extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: dates.contains(fecha.millisecondsSinceEpoch)
-                      ? Colors.greenAccent
-                      : Colors.green.withOpacity(0.5),
+                      ? Color(color)
+                      : Color(color).withOpacity(0.5),
                 ),
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeInCubic,

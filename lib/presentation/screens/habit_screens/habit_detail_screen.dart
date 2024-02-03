@@ -46,8 +46,12 @@ class HabitDetailScreen extends StatelessWidget {
 
     final ValueNotifier<IconData> selectedIcon =
         ValueNotifier<IconData>(Icons.home);
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController descriptionController = TextEditingController();
+    final TextEditingController nameController =
+        TextEditingController(text: habit.title);
+    final TextEditingController descriptionController =
+        TextEditingController(text: habit.description);
+    final TextEditingController colorController =
+        TextEditingController(text: habit.color.toString());
 
     return CustomScaffold(
       title: Row(
@@ -63,14 +67,16 @@ class HabitDetailScreen extends StatelessWidget {
         child: Column(
           children: [
             editMethod(nameController, descriptionController, selectedIcon,
-                habit, context),
+                habit, context, colorController),
             ListTile(
               title: Text(habit.title),
               subtitle: Text(habit.description),
-              leading:
-                  Icon(IconData(habit.codePoint, fontFamily: "MaterialIcons")),
+              leading: Icon(
+                IconData(habit.codePoint, fontFamily: "MaterialIcons"),
+                color: Color(habit.color),
+              ),
               trailing: Switch(
-                  activeColor: Colors.greenAccent,
+                  activeColor: Color(habit.color),
                   value: habit.lastDate == DateUtilities.getToday(),
                   onChanged: (value) {
                     context.read<HabitCubit>().toggleOne(habit.id!);
@@ -102,11 +108,13 @@ class HabitDetailScreen extends StatelessWidget {
   }
 
   ExpansionPanelList editMethod(
-      TextEditingController nameController,
-      TextEditingController descriptionController,
-      ValueNotifier<IconData> selectedIcon,
-      HabitEntity habit,
-      BuildContext context) {
+    TextEditingController nameController,
+    TextEditingController descriptionController,
+    ValueNotifier<IconData> selectedIcon,
+    HabitEntity habit,
+    BuildContext context,
+    TextEditingController colorController,
+  ) {
     return ExpansionPanelList.radio(
       children: [
         ExpansionPanelRadio(
@@ -151,11 +159,18 @@ class HabitDetailScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextfieldsColumnWidget(
-                    nameController: nameController,
-                    descriptionController: descriptionController,
-                    selectedIcon: selectedIcon),
+                  nameController: nameController,
+                  descriptionController: descriptionController,
+                  selectedIcon: selectedIcon,
+                  colorController: colorController,
+                ),
                 ElevatedButton.icon(
                     onPressed: () {
+                      if (colorController.text.isEmpty) {
+                        colorController.text =
+                            Colors.greenAccent.value.toString();
+                      }
+
                       if (nameController.text.isEmpty ||
                           descriptionController.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -167,7 +182,8 @@ class HabitDetailScreen extends StatelessWidget {
                       HabitEntity newHabit = habit.copyWith(
                           newTitle: nameController.text,
                           newDescription: descriptionController.text,
-                          newCodePoint: selectedIcon.value.codePoint);
+                          newCodePoint: selectedIcon.value.codePoint,
+                          newColor: int.parse(colorController.text));
                       context.read<HabitCubit>().update(newHabit);
 
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

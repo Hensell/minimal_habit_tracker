@@ -15,6 +15,7 @@ class HabitCreateScreen extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final ValueNotifier<IconData> _selectedIcon = ValueNotifier(Icons.star);
+  final TextEditingController _colorController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +33,22 @@ class HabitCreateScreen extends StatelessWidget {
   CustomScaffold bodyMethod(BuildContext context) {
     return CustomScaffold(
       title: Text(AppLocalizations.of(context)!.addHabit),
-      body: TextfieldsColumnWidget(
-        nameController: _nameController,
-        descriptionController: _descriptionController,
-        selectedIcon: _selectedIcon,
+      body: Column(
+        children: [
+          TextfieldsColumnWidget(
+            nameController: _nameController,
+            descriptionController: _descriptionController,
+            selectedIcon: _selectedIcon,
+            colorController: _colorController,
+          ),
+        ],
       ),
       bottonBar: ElevatedButton.icon(
           onPressed: () {
+            if (_colorController.text.isEmpty) {
+              _colorController.text = Colors.greenAccent.value.toString();
+            }
+
             if (_nameController.text.isEmpty ||
                 _descriptionController.text.isEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -50,7 +60,8 @@ class HabitCreateScreen extends StatelessWidget {
             context.read<HabitCubit>().insert(HabitEntity(
                 title: _nameController.text,
                 description: _descriptionController.text,
-                codePoint: _selectedIcon.value.codePoint));
+                codePoint: _selectedIcon.value.codePoint,
+                color: int.parse(_colorController.text)));
 
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content:

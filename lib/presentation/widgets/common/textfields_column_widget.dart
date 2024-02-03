@@ -1,3 +1,4 @@
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,9 +8,11 @@ class TextfieldsColumnWidget extends StatelessWidget {
       {super.key,
       required this.nameController,
       required this.descriptionController,
-      required this.selectedIcon});
+      required this.selectedIcon,
+      required this.colorController});
   final TextEditingController nameController;
   final TextEditingController descriptionController;
+  final TextEditingController colorController;
   final ValueNotifier<IconData> selectedIcon;
 
   @override
@@ -59,6 +62,14 @@ class TextfieldsColumnWidget extends StatelessWidget {
                 },
               );
             }),
+        ColorPicker(
+          onColorChanged: (Color value) {
+            colorController.text = value.value.toString();
+          },
+          color: Color(colorController.text.isEmpty
+              ? Colors.greenAccent.value
+              : int.parse(colorController.text)),
+        ),
       ],
     );
   }
