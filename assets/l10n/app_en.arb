@@ -69,5 +69,13 @@
 "dontDelete" : "Don´t delete",
 "@dontDelete":{
   "description": "To Don´t delete a messeage."
+},
+"primary" : "Primary",
+"@primary":{
+  "description": "Primary colors."
+},
+"accent" : "Accent",
+"@accent":{
+  "description": "Accent colors."
 }
 }

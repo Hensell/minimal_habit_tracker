@@ -15,7 +15,8 @@ class HabitCreateScreen extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final ValueNotifier<IconData> _selectedIcon = ValueNotifier(Icons.star);
-  final TextEditingController _colorController = TextEditingController();
+  final TextEditingController _colorController =
+      TextEditingController(text: Colors.greenAccent.value.toString());
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +46,6 @@ class HabitCreateScreen extends StatelessWidget {
       ),
       bottonBar: ElevatedButton.icon(
           onPressed: () {
-            if (_colorController.text.isEmpty) {
-              _colorController.text = Colors.greenAccent.value.toString();
-            }
-
             if (_nameController.text.isEmpty ||
                 _descriptionController.text.isEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(

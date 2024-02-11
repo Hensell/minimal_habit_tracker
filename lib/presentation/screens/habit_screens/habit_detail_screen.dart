@@ -13,16 +13,39 @@ import '../../bloc/habit_cubit/habit_cubit.dart';
 import 'habit_list_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class HabitDetailScreen extends StatelessWidget {
+DateTime finalDate = DateTime.now();
+
+class HabitDetailScreen extends StatefulWidget {
   const HabitDetailScreen({super.key, required this.habitEntity});
   final HabitEntity habitEntity;
+
+  @override
+  State<HabitDetailScreen> createState() => _HabitDetailScreenState();
+}
+
+class _HabitDetailScreenState extends State<HabitDetailScreen> {
+  DateTime finalDate = DateTime.now();
+  final ValueNotifier<IconData> selectedIcon =
+      ValueNotifier<IconData>(Icons.home);
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController colorController = TextEditingController();
+
+  @override
+  void dispose() {
+    selectedIcon.dispose();
+    nameController.dispose();
+    descriptionController.dispose();
+    colorController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
           HabitCubit(Provider.of<HabitRepositoryImpl>(context, listen: false))
-            ..getOne(habitEntity.id!),
+            ..getOne(widget.habitEntity.id!),
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
           if (state is HabitLoading) {
@@ -44,30 +67,21 @@ class HabitDetailScreen extends StatelessWidget {
   bodyMethod(BuildContext context, HabitSuccessOne state) {
     final habit = state.habits;
 
-    final ValueNotifier<IconData> selectedIcon =
-        ValueNotifier<IconData>(Icons.home);
-    final TextEditingController nameController =
-        TextEditingController(text: habit.title);
-    final TextEditingController descriptionController =
-        TextEditingController(text: habit.description);
-    final TextEditingController colorController =
-        TextEditingController(text: habit.color.toString());
+    selectedIcon.value = IconData(habit.codePoint, fontFamily: "MaterialIcons");
+
+    nameController.text = habit.title;
+
+    descriptionController.text = habit.description;
+
+    colorController.text = habit.color.toString();
 
     return CustomScaffold(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('${habit.title} '),
-          Icon(IconData(habit.codePoint, fontFamily: "MaterialIcons")),
-        ],
-      ),
+      title: Text('${habit.title} '),
       body: SingleChildScrollView(
           child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
-            editMethod(nameController, descriptionController, selectedIcon,
-                habit, context, colorController),
             ListTile(
               title: Text(habit.title),
               subtitle: Text(habit.description),
@@ -82,14 +96,19 @@ class HabitDetailScreen extends StatelessWidget {
                     context.read<HabitCubit>().toggleOne(habit.id!);
                   }),
             ),
+            editMethod(nameController, descriptionController, selectedIcon,
+                habit, context, colorController),
             SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 500,
                 child: CalendarDatePicker2(
-                  displayedMonthDate: DateTime.now(),
+                  displayedMonthDate: finalDate,
                   config: CalendarDatePicker2Config(
                       calendarType: CalendarDatePicker2Type.multi),
                   value: DateUtilities.millisecondsToDate(habit.dates),
+                  onDisplayedMonthChanged: (value) {
+                    finalDate = value;
+                  },
                   onValueChanged: (dates) {
                     List<DateTime> nonNullableDates =
                         dates.whereType<DateTime>().toList();
@@ -124,29 +143,7 @@ class HabitDetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    IconButton.filled(
-                        highlightColor: Colors.redAccent,
-                        onPressed: () => DialogUtils.deleteDialog(
-                            context: context,
-                            onDelete: () async {
-                              await context
-                                  .read<HabitCubit>()
-                                  .delete(habit)
-                                  .then((value) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            AppLocalizations.of(context)!
-                                                .habitDeleted)));
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const HabitListScreen()),
-                                );
-                              });
-                            }),
-                        icon: const Icon(Icons.delete)),
+                    deleteMethod(context, habit),
                     const Gap(10),
                     const CircleAvatar(
                       child: Icon(Icons.edit),
@@ -165,31 +162,7 @@ class HabitDetailScreen extends StatelessWidget {
                   colorController: colorController,
                 ),
                 ElevatedButton.icon(
-                    onPressed: () {
-                      if (colorController.text.isEmpty) {
-                        colorController.text =
-                            Colors.greenAccent.value.toString();
-                      }
-
-                      if (nameController.text.isEmpty ||
-                          descriptionController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(AppLocalizations.of(context)!
-                                .emptyNameOrDescription)));
-                        return;
-                      }
-
-                      HabitEntity newHabit = habit.copyWith(
-                          newTitle: nameController.text,
-                          newDescription: descriptionController.text,
-                          newCodePoint: selectedIcon.value.codePoint,
-                          newColor: int.parse(colorController.text));
-                      context.read<HabitCubit>().update(newHabit);
-
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(AppLocalizations.of(context)!
-                              .savedSuccessfully)));
-                    },
+                    onPressed: () => onSaveButtonPressed(habit, context),
                     icon: const Icon(Icons.edit),
                     label: Text(AppLocalizations.of(context)!.saveChanges)),
               ],
@@ -197,5 +170,59 @@ class HabitDetailScreen extends StatelessWidget {
             value: 'panel1')
       ],
     );
+  }
+
+  void onSaveButtonPressed(HabitEntity habit, BuildContext context) {
+    if (areFieldsEmpty()) {
+      showSnackBar(
+          messeage: AppLocalizations.of(context)!.emptyNameOrDescription);
+      return;
+    }
+
+    context.read<HabitCubit>().update(createNewHabitFromFields(habit)).then(
+          (value) => showSnackBar(
+              messeage: AppLocalizations.of(context)!.savedSuccessfully),
+        );
+  }
+
+  bool areFieldsEmpty() {
+    return nameController.text.isEmpty || descriptionController.text.isEmpty;
+  }
+
+  void showSnackBar({required String messeage}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(messeage),
+      ),
+    );
+  }
+
+  HabitEntity createNewHabitFromFields(HabitEntity habit) {
+    HabitEntity newHabit = habit.copyWith(
+        newTitle: nameController.text,
+        newDescription: descriptionController.text,
+        newCodePoint: selectedIcon.value.codePoint,
+        newColor: int.parse(colorController.text));
+
+    return newHabit;
+  }
+
+  IconButton deleteMethod(BuildContext context, HabitEntity habit) {
+    return IconButton.filled(
+        highlightColor: Colors.redAccent,
+        onPressed: () => DialogUtils.deleteDialog(
+            context: context,
+            onDelete: () async {
+              await context.read<HabitCubit>().delete(habit).then((value) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(AppLocalizations.of(context)!.habitDeleted)));
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const HabitListScreen()),
+                );
+              });
+            }),
+        icon: const Icon(Icons.delete));
   }
 }

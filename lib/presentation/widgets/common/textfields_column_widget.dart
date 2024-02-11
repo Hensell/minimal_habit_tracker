@@ -55,7 +55,7 @@ class TextfieldsColumnWidget extends StatelessWidget {
                   DropdownMenuItem(
                     value: Icons.shopping_cart,
                     child: Icon(Icons.shopping_cart),
-                  )
+                  ),
                 ],
                 onChanged: (IconData? newValue) {
                   selectedIcon.value = newValue!;
@@ -65,6 +65,10 @@ class TextfieldsColumnWidget extends StatelessWidget {
         ColorPicker(
           onColorChanged: (Color value) {
             colorController.text = value.value.toString();
+          },
+          pickerTypeLabels: <ColorPickerType, String>{
+            ColorPickerType.primary: AppLocalizations.of(context)!.primary,
+            ColorPickerType.accent: AppLocalizations.of(context)!.accent,
           },
           color: Color(colorController.text.isEmpty
               ? Colors.greenAccent.value

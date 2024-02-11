@@ -13,5 +13,7 @@
     "emptyNameOrDescription": "El nombre o la descripción están vacíos",
     "saveChanges": "Guardar cambios",
     "confirmDeletion": "¿Está seguro de que desea eliminar este hábito? Esta acción no se puede deshacer.",
-    "dontDelete" : "No eliminar"
+    "dontDelete" : "No eliminar",
+    "primary": "Primarios",
+    "accent": "Acento"
 }

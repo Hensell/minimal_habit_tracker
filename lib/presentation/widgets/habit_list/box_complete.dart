@@ -13,15 +13,13 @@ class BoxComplete extends StatelessWidget {
       slivers: [
         SliverGrid.builder(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 30),
-            itemCount: 365,
+                maxCrossAxisExtent: 35),
+            itemCount: DateUtilities.daysOfTheMonth(),
             itemBuilder: (context, index) {
               DateTime fecha =
-                  DateUtilities.firstDayOfTheYear().add(Duration(days: index));
+                  DateUtilities.firstDayOfTheMonth().add(Duration(days: index));
 
               return AnimatedContainer(
-                width: 20,
-                height: 20,
                 margin: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),

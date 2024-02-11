@@ -22,7 +22,7 @@ class HabitCubit extends Cubit<HabitState> {
     emit(HabitSuccess(habits));
   }
 
-  Future<void> update(HabitEntity habitEntity) async {
+  Future<void> update(HabitEntity habitEntity, {bool emitValue = true}) async {
     final value = await _habitRepository.update(habitEntity);
     emit(HabitSuccessOne(value));
   }

@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 class DateUtilities {
   static int getToday() {
     DateTime currentDate = DateTime.now();
@@ -6,14 +9,30 @@ class DateUtilities {
     return dateWithoutTime.millisecondsSinceEpoch;
   }
 
-  static DateTime firstDayOfTheYear() {
+  static DateTime firstDayOfTheMonth() {
     DateTime now = DateTime.now();
-    DateTime aYearAgo = DateTime(now.year, 1, 1);
+    DateTime aYearAgo = DateTime(now.year, now.month, 1);
     return aYearAgo;
   }
 
+  static String getFormatDate(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formattedDate =
+        DateFormat('MMMM', Localizations.localeOf(context).languageCode)
+            .format(now);
+    return formattedDate;
+  }
+
+  static int daysOfTheMonth() {
+    DateTime now = DateTime.now();
+    DateTime firstDayOfNextMonth = DateTime(now.year, now.month + 1, 1);
+    DateTime lastDayOfMonth =
+        firstDayOfNextMonth.subtract(const Duration(days: 1));
+    return lastDayOfMonth.day;
+  }
+
   static int differenceBetweenDates() {
-    Duration difference = DateTime.now().difference(firstDayOfTheYear());
+    Duration difference = DateTime.now().difference(firstDayOfTheMonth());
     return difference.inDays;
   }
 
