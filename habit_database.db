@@ -1,9 +1,7 @@
 {"version":1,"sembast":1}
-{"key":9,"store":"habit","value":{"title":"testtest","description":"tests","lastDate":1707631200000,"codePoint":58873,"dates":[1707631200000],"color":4294918273}}
-{"key":10,"store":"habit","value":{"title":"testasfdasdfasdf","description":"testasdfasdf","lastDate":1706853600000,"codePoint":58136,"dates":[1706853600000],"color":4282434815}}
+{"key":9,"store":"habit","value":{"title":"testtest","description":"tests","lastDate":0,"codePoint":58873,"dates":[1706940000000,1707026400000,1707544800000,1707717600000,1707804000000,1707890400000],"color":4294918273}}
+{"key":10,"store":"habit","value":{"title":"testasfdasdfasdf","description":"testasdfasdf","lastDate":0,"codePoint":58136,"dates":[1706853600000],"color":4282434815}}
 {"key":11,"store":"habit","value":{"title":"aa","description":"aa","lastDate":0,"codePoint":58136,"dates":[]}}
 {"key":12,"store":"habit","value":{"title":"habito widget ","description":"habito widget jiji","lastDate":1707631200000,"codePoint":58780,"dates":[1707631200000]}}
-{"key":13,"store":"habit","value":{"title":"a","description":"a","lastDate":0,"codePoint":58873,"dates":[]}}
-{"key":12,"store":"habit","value":{"title":"habito widget ","description":"habito widget jiji","lastDate":0,"codePoint":58780,"dates":[]}}
-{"key":12,"store":"habit","value":{"title":"habito widget ","description":"habito widget jiji","lastDate":1707631200000,"codePoint":58780,"dates":[1707631200000]}}
 {"key":13,"store":"habit","value":{"title":"a","description":"a","lastDate":1707631200000,"codePoint":58873,"dates":[1707631200000]}}
+{"key":9,"store":"habit","value":{"title":"testtest","description":"tests","lastDate":1707631200000,"codePoint":58873,"dates":[1706940000000,1707026400000,1707544800000,1707717600000,1707804000000,1707890400000,1707631200000],"color":4294918273}}

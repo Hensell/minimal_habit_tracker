@@ -33,6 +33,7 @@ class HabitEntity {
   HabitEntity copyWith(
       {String? newTitle,
       String? newDescription,
+      int? newLastDate,
       int? newCodePoint,
       List<int>? newDates,
       int? newColor}) {
@@ -40,7 +41,7 @@ class HabitEntity {
         id: id,
         title: newTitle ?? title,
         description: newDescription ?? description,
-        lastDate: lastDate,
+        lastDate: newLastDate ?? lastDate,
         codePoint: newCodePoint ?? codePoint,
         dates: newDates ?? List<int>.from(dates),
         color: newColor ?? color);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minimal_habit_tracker/core/utils/color_utils.dart';
 import 'package:minimal_habit_tracker/core/utils/date_utilities.dart';
 
 class BoxComplete extends StatelessWidget {
@@ -10,6 +11,7 @@ class BoxComplete extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       scrollDirection: Axis.vertical,
+      physics: const NeverScrollableScrollPhysics(),
       slivers: [
         SliverGrid.builder(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -22,10 +24,20 @@ class BoxComplete extends StatelessWidget {
               return AnimatedContainer(
                 margin: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: dates.contains(fecha.millisecondsSinceEpoch)
-                      ? Color(color)
-                      : Color(color).withOpacity(0.5),
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      dates.contains(fecha.millisecondsSinceEpoch)
+                          ? ColorUtils.adjustLightness(Color(color))
+                          : Color(color).withOpacity(0.5),
+                      dates.contains(fecha.millisecondsSinceEpoch)
+                          ? Color(color)
+                          : Color(color).withOpacity(0.5)
+                    ],
+                    stops: const [0.1, 1.0],
+                    center: Alignment.topLeft,
+                    radius: 1.0,
+                  ),
                 ),
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeInCubic,

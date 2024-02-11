@@ -67,13 +67,18 @@ class HabitListScreen extends StatelessWidget {
                               leading: Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Color(habit.color).withOpacity(0.8),
-                                ),
+                                    borderRadius: BorderRadius.circular(5),
+                                    gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          Color(habit.color),
+                                          Color(habit.color).withOpacity(0.8)
+                                        ])),
                                 child: Icon(
                                   IconData(habit.codePoint,
                                       fontFamily: "MaterialIcons"),
-                                  color: Colors.white.withOpacity(1),
+                                  color: Colors.white,
                                 ),
                               ),
                               trailing: Switch(

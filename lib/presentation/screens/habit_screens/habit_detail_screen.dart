@@ -113,9 +113,22 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     List<DateTime> nonNullableDates =
                         dates.whereType<DateTime>().toList();
 
-                    HabitEntity newHabit = habit.copyWith(
-                        newDates:
-                            DateUtilities.dateToMilliseconds(nonNullableDates));
+                    bool existsToday = nonNullableDates.any((date) =>
+                        date.year == DateTime.now().year &&
+                        date.month == DateTime.now().month &&
+                        date.day == DateTime.now().day);
+                    HabitEntity newHabit;
+                    if (existsToday) {
+                      newHabit = habit.copyWith(
+                          newLastDate: DateUtilities.getToday(),
+                          newDates: DateUtilities.dateToMilliseconds(
+                              nonNullableDates));
+                    } else {
+                      newHabit = habit.copyWith(
+                          newLastDate: 0,
+                          newDates: DateUtilities.dateToMilliseconds(
+                              nonNullableDates));
+                    }
 
                     context.read<HabitCubit>().update(newHabit);
                   },
