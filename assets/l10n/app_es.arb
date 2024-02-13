@@ -15,5 +15,6 @@
     "confirmDeletion": "¿Está seguro de que desea eliminar este hábito? Esta acción no se puede deshacer.",
     "dontDelete" : "No eliminar",
     "primary": "Primarios",
-    "accent": "Acento"
+    "accent": "Acento",
+    "modify": "Modificar"
 }

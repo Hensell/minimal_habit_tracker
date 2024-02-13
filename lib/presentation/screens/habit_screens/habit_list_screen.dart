@@ -9,6 +9,7 @@ import 'package:minimal_habit_tracker/presentation/widgets/habit_list/habit_list
 import 'package:provider/provider.dart';
 import '../../../data/repositories/habit_repository_impl.dart';
 import '../../bloc/habit_cubit/habit_cubit.dart';
+import '../../widgets/common/custom_list_title.dart';
 import '../../widgets/habit_list/box_complete.dart';
 
 class HabitListScreen extends StatelessWidget {
@@ -61,35 +62,17 @@ class HabitListScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10)),
                         child: Column(
                           children: [
-                            ListTile(
-                              title: Text(habit.title),
-                              subtitle: Text(habit.description),
-                              leading: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    gradient: LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [
-                                          Color(habit.color),
-                                          Color(habit.color).withOpacity(0.8)
-                                        ])),
-                                child: Icon(
-                                  IconData(habit.codePoint,
-                                      fontFamily: "MaterialIcons"),
-                                  color: Colors.white,
-                                ),
-                              ),
-                              trailing: Switch(
-                                  activeColor: Color(habit.color),
-                                  value: habit.lastDate ==
-                                      DateUtilities.getToday(),
-                                  onChanged: (value) {
-                                    context
-                                        .read<HabitCubit>()
-                                        .toggle(habit.id!);
-                                  }),
+                            CustomListTitle(
+                              title: habit.title,
+                              description: habit.description,
+                              color: Color(habit.color),
+                              icon: IconData(habit.codePoint,
+                                  fontFamily: "MaterialIcons"),
+                              valueSwitch:
+                                  habit.lastDate == DateUtilities.getToday(),
+                              onChangedSwitch: (value) {
+                                context.read<HabitCubit>().toggle(habit.id!);
+                              },
                               onTap: () {
                                 Navigator.pushReplacement(
                                     context,

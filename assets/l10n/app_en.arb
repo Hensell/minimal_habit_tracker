@@ -77,5 +77,13 @@
 "accent" : "Accent",
 "@accent":{
   "description": "Accent colors."
+},
+
+"modify": "Modify",
+"@modify":{
+  "description": "To modify."
 }
+
+
+
 }

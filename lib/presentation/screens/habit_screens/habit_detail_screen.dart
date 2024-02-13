@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:minimal_habit_tracker/domain/entities/habit_entity.dart';
+import 'package:minimal_habit_tracker/presentation/widgets/common/custom_list_title.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_scaffold.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/textfields_column_widget.dart';
 import 'package:provider/provider.dart';
@@ -76,34 +77,27 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     colorController.text = habit.color.toString();
 
     return CustomScaffold(
-      title: Text('${habit.title} '),
+      title: Text(AppLocalizations.of(context)!.modify),
       body: SingleChildScrollView(
           child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
-            ListTile(
-              title: Text(habit.title),
-              subtitle: Text(habit.description),
-              leading: Icon(
-                IconData(habit.codePoint, fontFamily: "MaterialIcons"),
+            CustomListTitle(
+                title: habit.title,
+                description: habit.description,
                 color: Color(habit.color),
-              ),
-              trailing: Switch(
-                  activeColor: Color(habit.color),
-                  value: habit.lastDate == DateUtilities.getToday(),
-                  onChanged: (value) {
-                    context.read<HabitCubit>().toggleOne(habit.id!);
-                  }),
-            ),
-            editMethod(nameController, descriptionController, selectedIcon,
-                habit, context, colorController),
+                icon: IconData(habit.codePoint, fontFamily: "MaterialIcons"),
+                valueSwitch: habit.lastDate == DateUtilities.getToday(),
+                onChangedSwitch: (value) {
+                  context.read<HabitCubit>().toggleOne(habit.id!);
+                }),
             SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 500,
                 child: CalendarDatePicker2(
                   displayedMonthDate: finalDate,
                   config: CalendarDatePicker2Config(
+                      lastDate: DateTime.now(),
                       calendarType: CalendarDatePicker2Type.multi),
                   value: DateUtilities.millisecondsToDate(habit.dates),
                   onDisplayedMonthChanged: (value) {
@@ -132,7 +126,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
 
                     context.read<HabitCubit>().update(newHabit);
                   },
-                ))
+                )),
+            editMethod(nameController, descriptionController, selectedIcon,
+                habit, context, colorController),
           ],
         ),
       )),
@@ -161,6 +157,12 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     const CircleAvatar(
                       child: Icon(Icons.edit),
                     ),
+                    const Gap(10),
+                    Text(
+                      AppLocalizations.of(context)!.modify,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    )
                   ],
                 ),
               );
