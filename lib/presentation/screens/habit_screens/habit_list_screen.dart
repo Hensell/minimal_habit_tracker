@@ -2,15 +2,15 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:minimal_habit_tracker/core/utils/date_utilities.dart';
-import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_create_screen.dart';
-import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_detail_screen.dart';
-import 'package:minimal_habit_tracker/presentation/widgets/habit_list/habit_list_app_bar.dart';
 import 'package:provider/provider.dart';
+import '../../../core/utils/date_utilities.dart';
 import '../../../data/repositories/habit_repository_impl.dart';
 import '../../bloc/habit_cubit/habit_cubit.dart';
 import '../../widgets/common/custom_list_title.dart';
 import '../../widgets/habit_list/box_complete.dart';
+import '../../widgets/habit_list/habit_list_app_bar.dart';
+import 'habit_create_screen.dart';
+import 'habit_detail_screen.dart';
 
 class HabitListScreen extends StatelessWidget {
   const HabitListScreen({super.key});
