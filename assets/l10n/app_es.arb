@@ -1,0 +1,20 @@
+{
+    "welcome": "Hola.",
+    "addHabit": "Añadir habito",
+    "loading": "Cargando...",
+    "today": "Hoy",
+    "toggle": "Mostrar / Ocultar",
+    "habitName": "Nombre del habito",
+    "habitDescription": "Descripción del habito",
+    "savedSuccessfully" : "¡Guardado exitoso!",
+    "saveHabit": "Guardar hábito",
+    "deleteHabit":"Eliminar habito",
+    "habitDeleted" :"El hábito ha sido eliminado",
+    "emptyNameOrDescription": "El nombre o la descripción están vacíos",
+    "saveChanges": "Guardar cambios",
+    "confirmDeletion": "¿Está seguro de que desea eliminar este hábito? Esta acción no se puede deshacer.",
+    "dontDelete" : "No eliminar",
+    "primary": "Primarios",
+    "accent": "Acento",
+    "modify": "Modificar"
+}
