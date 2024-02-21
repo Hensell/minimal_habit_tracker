@@ -2,34 +2,34 @@
 
 An app built with Flutter that helps you track your habits.
 
-## Instalación
+## Installation
 
 Instrucciones para instalar la aplicación.
 
-## Características
+## Features
 
 - Característica 1
 - Característica 2
 - ...
 
-## Capturas de Pantalla
+## Screenshots
 
 ![Captura de Pantalla 1](screenshots/screenshot1.png)
 ![Captura de Pantalla 2](screenshots/screenshot2.png)
 ...
 
-## Requisitos del Sistema
+## System Requirements
 
 - Requisito 1
 - Requisito 2
 - ...
 
-## Uso
+## Usage
 
 Instrucciones de uso de la aplicación.
 
 
-## Licencia
+## License
 
 ```
 MIT License
