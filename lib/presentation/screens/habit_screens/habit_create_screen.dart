@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minimal_habit_tracker/data/repositories/habit_repository_impl.dart';
 import 'package:minimal_habit_tracker/presentation/bloc/habit_cubit/habit_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:minimal_habit_tracker/presentation/widgets/common/custom_button.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_scaffold.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entities/habit_entity.dart';
@@ -9,14 +10,31 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../widgets/common/textfields_column_widget.dart';
 
-class HabitCreateScreen extends StatelessWidget {
-  HabitCreateScreen({super.key});
+class HabitCreateScreen extends StatefulWidget {
+  const HabitCreateScreen({super.key});
 
+  @override
+  State<HabitCreateScreen> createState() => _HabitCreateScreenState();
+}
+
+class _HabitCreateScreenState extends State<HabitCreateScreen> {
   final TextEditingController _nameController = TextEditingController();
+
   final TextEditingController _descriptionController = TextEditingController();
+
   final ValueNotifier<IconData> _selectedIcon = ValueNotifier(Icons.star);
+
   final TextEditingController _colorController =
       TextEditingController(text: Colors.greenAccent.value.toString());
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _selectedIcon.dispose();
+    _colorController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,24 +51,27 @@ class HabitCreateScreen extends StatelessWidget {
 
   CustomScaffold bodyMethod(BuildContext context) {
     return CustomScaffold(
-      title: Text(AppLocalizations.of(context)!.addHabit),
-      body: Column(
-        children: [
-          TextfieldsColumnWidget(
-            nameController: _nameController,
-            descriptionController: _descriptionController,
-            selectedIcon: _selectedIcon,
-            colorController: _colorController,
-          ),
-        ],
-      ),
-      bottonBar: ElevatedButton.icon(
+        title: Text(AppLocalizations.of(context)!.addHabit),
+        body: Column(
+          children: [
+            TextfieldsColumnWidget(
+              nameController: _nameController,
+              descriptionController: _descriptionController,
+              selectedIcon: _selectedIcon,
+              colorController: _colorController,
+            ),
+          ],
+        ),
+        bottonBar: CustomButton(
           onPressed: () {
             if (_nameController.text.isEmpty ||
                 _descriptionController.text.isEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  backgroundColor: const Color(0xFF523f5f),
                   content: Text(
-                      AppLocalizations.of(context)!.emptyNameOrDescription)));
+                    AppLocalizations.of(context)!.emptyNameOrDescription,
+                    style: const TextStyle(color: Color(0xFF9ecaff)),
+                  )));
               return;
             }
 
@@ -61,13 +82,19 @@ class HabitCreateScreen extends StatelessWidget {
                 color: int.parse(_colorController.text)));
 
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content:
-                    Text(AppLocalizations.of(context)!.savedSuccessfully)));
+                backgroundColor: const Color(0xFF523f5f),
+                content: Text(AppLocalizations.of(context)!.savedSuccessfully,
+                    style: const TextStyle(color: Color(0xFF9ecaff)))));
             _nameController.clear();
             _descriptionController.clear();
           },
-          icon: const Icon(Icons.save),
-          label: Text(AppLocalizations.of(context)!.saveHabit)),
-    );
+          color: const Color(0xFF523f5f),
+          borderRadius: 0,
+          width: double.infinity,
+          text: Text(
+            AppLocalizations.of(context)!.saveHabit,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ));
   }
 }

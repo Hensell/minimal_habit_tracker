@@ -16,5 +16,6 @@
     "dontDelete" : "No eliminar",
     "primary": "Primarios",
     "accent": "Acento",
-    "modify": "Modificar"
+    "modify": "Modificar",
+    "showCalendar":"Mostrar calendario"
 }

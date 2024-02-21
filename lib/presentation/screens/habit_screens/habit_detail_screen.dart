@@ -1,11 +1,11 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:minimal_habit_tracker/domain/entities/habit_entity.dart';
+import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_update_screen.dart';
+import 'package:minimal_habit_tracker/presentation/widgets/common/custom_button.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_list_title.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_scaffold.dart';
-import 'package:minimal_habit_tracker/presentation/widgets/common/textfields_column_widget.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/date_utilities.dart';
 import '../../../core/utils/dialog_utils.dart';
@@ -68,14 +68,6 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
   bodyMethod(BuildContext context, HabitSuccessOne state) {
     final habit = state.habits;
 
-    selectedIcon.value = IconData(habit.codePoint, fontFamily: "MaterialIcons");
-
-    nameController.text = habit.title;
-
-    descriptionController.text = habit.description;
-
-    colorController.text = habit.color.toString();
-
     return CustomScaffold(
       title: Text(AppLocalizations.of(context)!.modify),
       body: SingleChildScrollView(
@@ -92,7 +84,70 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 onChangedSwitch: (value) {
                   context.read<HabitCubit>().toggleOne(habit.id!);
                 }),
-            SizedBox(
+            showCalendarMethod(context, habit),
+          ],
+        ),
+      )),
+      bottonBar: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CustomButton(
+              width: MediaQuery.of(context).size.width / 2,
+              borderRadius: 0,
+              onPressed: () {
+                DialogUtils.deleteDialog(
+                    context: context,
+                    onDelete: () async {
+                      await context
+                          .read<HabitCubit>()
+                          .delete(habit)
+                          .then((value) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: const Color(0xFF523f5f),
+                            content: Text(
+                                AppLocalizations.of(context)!.habitDeleted,
+                                style: const TextStyle(
+                                    color: Color(0xFF9ecaff)))));
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HabitListScreen()),
+                        );
+                      });
+                    });
+              },
+              color: Colors.redAccent,
+              text: Text(AppLocalizations.of(context)!.deleteHabit)),
+          CustomButton(
+              borderRadius: 0,
+              width: MediaQuery.of(context).size.width / 2,
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => HabitUpdateScreen(
+                              habit: habit,
+                            ))));
+              },
+              color: Colors.deepPurpleAccent,
+              text: Text(AppLocalizations.of(context)!.modify)),
+        ],
+      ),
+    );
+  }
+
+  ExpansionPanelList showCalendarMethod(
+      BuildContext context, HabitEntity habit) {
+    return ExpansionPanelList.radio(
+      children: [
+        ExpansionPanelRadio(
+            canTapOnHeader: true,
+            headerBuilder: (BuildContext context, bool isExpanded) {
+              return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(AppLocalizations.of(context)!.showCalendar));
+            },
+            body: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: CalendarDatePicker2(
                   displayedMonthDate: finalDate,
@@ -127,117 +182,8 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     context.read<HabitCubit>().update(newHabit);
                   },
                 )),
-            editMethod(nameController, descriptionController, selectedIcon,
-                habit, context, colorController),
-          ],
-        ),
-      )),
-    );
-  }
-
-  ExpansionPanelList editMethod(
-    TextEditingController nameController,
-    TextEditingController descriptionController,
-    ValueNotifier<IconData> selectedIcon,
-    HabitEntity habit,
-    BuildContext context,
-    TextEditingController colorController,
-  ) {
-    return ExpansionPanelList.radio(
-      children: [
-        ExpansionPanelRadio(
-            canTapOnHeader: true,
-            headerBuilder: (BuildContext context, bool isExpanded) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    deleteMethod(context, habit),
-                    const Gap(10),
-                    const CircleAvatar(
-                      child: Icon(Icons.edit),
-                    ),
-                    const Gap(10),
-                    Text(
-                      AppLocalizations.of(context)!.modify,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              );
-            },
-            body: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextfieldsColumnWidget(
-                  nameController: nameController,
-                  descriptionController: descriptionController,
-                  selectedIcon: selectedIcon,
-                  colorController: colorController,
-                ),
-                ElevatedButton.icon(
-                    onPressed: () => onSaveButtonPressed(habit, context),
-                    icon: const Icon(Icons.edit),
-                    label: Text(AppLocalizations.of(context)!.saveChanges)),
-              ],
-            ),
             value: 'panel1')
       ],
     );
-  }
-
-  void onSaveButtonPressed(HabitEntity habit, BuildContext context) {
-    if (areFieldsEmpty()) {
-      showSnackBar(
-          messeage: AppLocalizations.of(context)!.emptyNameOrDescription);
-      return;
-    }
-
-    context.read<HabitCubit>().update(createNewHabitFromFields(habit)).then(
-          (value) => showSnackBar(
-              messeage: AppLocalizations.of(context)!.savedSuccessfully),
-        );
-  }
-
-  bool areFieldsEmpty() {
-    return nameController.text.isEmpty || descriptionController.text.isEmpty;
-  }
-
-  void showSnackBar({required String messeage}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(messeage),
-      ),
-    );
-  }
-
-  HabitEntity createNewHabitFromFields(HabitEntity habit) {
-    HabitEntity newHabit = habit.copyWith(
-        newTitle: nameController.text,
-        newDescription: descriptionController.text,
-        newCodePoint: selectedIcon.value.codePoint,
-        newColor: int.parse(colorController.text));
-
-    return newHabit;
-  }
-
-  IconButton deleteMethod(BuildContext context, HabitEntity habit) {
-    return IconButton.filled(
-        highlightColor: Colors.redAccent,
-        onPressed: () => DialogUtils.deleteDialog(
-            context: context,
-            onDelete: () async {
-              await context.read<HabitCubit>().delete(habit).then((value) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(AppLocalizations.of(context)!.habitDeleted)));
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const HabitListScreen()),
-                );
-              });
-            }),
-        icon: const Icon(Icons.delete));
   }
 }

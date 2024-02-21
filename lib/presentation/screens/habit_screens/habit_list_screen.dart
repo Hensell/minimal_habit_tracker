@@ -41,67 +41,64 @@ class HabitListScreen extends StatelessWidget {
                   ),
                 ],
               )),
-              body: CustomScrollView(slivers: [
-                SliverList.builder(
-                    itemCount: state.habits.length,
-                    itemBuilder: (context, index) {
-                      final habit = state.habits[index];
+              body: ListView.builder(
+                  itemCount: state.habits.length,
+                  itemBuilder: (context, index) {
+                    final habit = state.habits[index];
 
-                      return Container(
-                        padding: const EdgeInsets.all(5),
-                        margin: const EdgeInsets.only(
-                            bottom: 15, left: 10, right: 10),
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.black38.withOpacity(0.5),
-                                  Colors.black38.withOpacity(1)
-                                ]),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(
-                          children: [
-                            CustomListTitle(
-                              title: habit.title,
-                              description: habit.description,
-                              color: Color(habit.color),
-                              icon: IconData(habit.codePoint,
-                                  fontFamily: "MaterialIcons"),
-                              valueSwitch:
-                                  habit.lastDate == DateUtilities.getToday(),
-                              onChangedSwitch: (value) {
-                                context.read<HabitCubit>().toggle(habit.id!);
-                              },
-                              onTap: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: ((context) =>
-                                            HabitDetailScreen(
-                                              habitEntity: habit,
-                                            ))));
-                              },
+                    return Container(
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.only(
+                          bottom: 15, left: 10, right: 10),
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.black38.withOpacity(0.5),
+                                Colors.black38.withOpacity(1)
+                              ]),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        children: [
+                          CustomListTitle(
+                            title: habit.title,
+                            description: habit.description,
+                            color: Color(habit.color),
+                            icon: IconData(habit.codePoint,
+                                fontFamily: "MaterialIcons"),
+                            valueSwitch:
+                                habit.lastDate == DateUtilities.getToday(),
+                            onChangedSwitch: (value) {
+                              context.read<HabitCubit>().toggle(habit.id!);
+                            },
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => HabitDetailScreen(
+                                            habitEntity: habit,
+                                          ))));
+                            },
+                          ),
+                          SizedBox(
+                            height: 200,
+                            child: BoxComplete(
+                              dates: habit.dates,
+                              color: habit.color,
                             ),
-                            SizedBox(
-                              height: 200,
-                              child: BoxComplete(
-                                dates: habit.dates,
-                                color: habit.color,
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    }),
-              ]),
+                          )
+                        ],
+                      ),
+                    );
+                  }),
               floatingActionButton: FloatingActionButton(
                   tooltip: AppLocalizations.of(context)!.addHabit,
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => HabitCreateScreen()),
+                          builder: (context) => const HabitCreateScreen()),
                     );
                   },
                   child: const Icon(Icons.add)),

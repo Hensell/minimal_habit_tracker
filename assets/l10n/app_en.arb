@@ -82,6 +82,10 @@
 "modify": "Modify",
 "@modify":{
   "description": "To modify."
+},
+"showCalendar": "Show calendar",
+"@showcalendar":{
+  "description": "To show a calendar."
 }
 
 

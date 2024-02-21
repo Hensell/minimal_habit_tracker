@@ -43,3 +43,5 @@ app.*.map.json
 /android/app/release
 
 habit_database.db
+firebase.json
+.firebase/
