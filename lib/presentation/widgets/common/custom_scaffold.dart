@@ -4,11 +4,17 @@ import '../../screens/habit_screens/habit_list_screen.dart';
 
 class CustomScaffold extends StatelessWidget {
   const CustomScaffold(
-      {super.key, required this.title, required this.body, this.bottonBar});
+      {super.key,
+      required this.title,
+      required this.body,
+      this.bottonBar,
+      this.colorAppBar,
+      this.iconAppBar});
   final Widget title;
   final Widget body;
   final Widget? bottonBar;
-
+  final Color? colorAppBar;
+  final Widget? iconAppBar;
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -21,6 +27,7 @@ class CustomScaffold extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: colorAppBar,
           centerTitle: true,
           title: title,
           leading: IconButton(
@@ -31,7 +38,7 @@ class CustomScaffold extends StatelessWidget {
                       builder: (context) => const HabitListScreen()),
                 );
               },
-              icon: const Icon(Icons.close)),
+              icon: iconAppBar ?? const Icon(Icons.close)),
         ),
         body: body,
         bottomNavigationBar: bottonBar,

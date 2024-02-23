@@ -8,12 +8,10 @@ class TextfieldsColumnWidget extends StatelessWidget {
       {super.key,
       required this.nameController,
       required this.descriptionController,
-      required this.selectedIcon,
       required this.colorController});
   final TextEditingController nameController;
   final TextEditingController descriptionController;
   final TextEditingController colorController;
-  final ValueNotifier<IconData> selectedIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -33,35 +31,6 @@ class TextfieldsColumnWidget extends StatelessWidget {
               label: Text(AppLocalizations.of(context)!.habitDescription)),
         ),
         const Gap(20),
-        ValueListenableBuilder<IconData>(
-            valueListenable: selectedIcon,
-            builder: (context, value, _) {
-              return DropdownButton<IconData>(
-                isExpanded: true,
-                value: value,
-                items: const [
-                  DropdownMenuItem(
-                    value: Icons.home,
-                    child: Icon(Icons.home),
-                  ),
-                  DropdownMenuItem(
-                    value: Icons.favorite,
-                    child: Icon(Icons.favorite),
-                  ),
-                  DropdownMenuItem(
-                    value: Icons.star,
-                    child: Icon(Icons.star),
-                  ),
-                  DropdownMenuItem(
-                    value: Icons.shopping_cart,
-                    child: Icon(Icons.shopping_cart),
-                  ),
-                ],
-                onChanged: (IconData? newValue) {
-                  selectedIcon.value = newValue!;
-                },
-              );
-            }),
         ColorPicker(
           onColorChanged: (Color value) {
             colorController.text = value.value.toString();

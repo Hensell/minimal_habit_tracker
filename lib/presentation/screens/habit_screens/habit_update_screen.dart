@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_detail_screen.dart';
-import 'package:provider/provider.dart';
 import '../../../data/repositories/habit_repository_impl.dart';
 import '../../../domain/entities/habit_entity.dart';
 import '../../bloc/habit_cubit/habit_cubit.dart';
@@ -20,7 +19,7 @@ class HabitUpdateScreen extends StatefulWidget {
 class _HabitUpdateScreenState extends State<HabitUpdateScreen> {
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
-  late ValueNotifier<IconData> _selectedIcon;
+
   late TextEditingController _colorController;
   @override
   void initState() {
@@ -28,8 +27,6 @@ class _HabitUpdateScreenState extends State<HabitUpdateScreen> {
     _nameController = TextEditingController(text: widget.habit.title);
     _descriptionController =
         TextEditingController(text: widget.habit.description);
-    _selectedIcon = _selectedIcon = ValueNotifier(
-        IconData(widget.habit.codePoint, fontFamily: "MaterialIcons"));
 
     _colorController =
         TextEditingController(text: widget.habit.color.toString());
@@ -39,7 +36,7 @@ class _HabitUpdateScreenState extends State<HabitUpdateScreen> {
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
-    _selectedIcon.dispose();
+
     _colorController.dispose();
     super.dispose();
   }
@@ -47,8 +44,8 @@ class _HabitUpdateScreenState extends State<HabitUpdateScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          HabitCubit(Provider.of<HabitRepositoryImpl>(context, listen: false)),
+      create: (context) => HabitCubit(
+          RepositoryProvider.of<HabitRepositoryImpl>(context, listen: false)),
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
           return PopScope(
@@ -83,7 +80,6 @@ class _HabitUpdateScreenState extends State<HabitUpdateScreen> {
                     TextfieldsColumnWidget(
                       nameController: _nameController,
                       descriptionController: _descriptionController,
-                      selectedIcon: _selectedIcon,
                       colorController: _colorController,
                     ),
                   ],
@@ -133,7 +129,6 @@ class _HabitUpdateScreenState extends State<HabitUpdateScreen> {
     HabitEntity newHabit = habit.copyWith(
         newTitle: _nameController.text,
         newDescription: _descriptionController.text,
-        newCodePoint: _selectedIcon.value.codePoint,
         newColor: int.parse(_colorController.text));
 
     return newHabit;

@@ -1,44 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:minimal_habit_tracker/core/utils/color_utils.dart';
 
 class CustomListTitle extends StatelessWidget {
   const CustomListTitle(
       {super.key,
       required this.title,
       required this.description,
-      required this.color,
-      required this.icon,
+      required this.colorSwitch,
       required this.valueSwitch,
       required this.onChangedSwitch,
-      this.onTap});
+      this.onTap,
+      this.elipsis = true});
   final String title;
   final String description;
-  final Color color;
-  final IconData icon;
+  final Color colorSwitch;
+
   final bool valueSwitch;
   final Function(bool) onChangedSwitch;
   final VoidCallback? onTap;
-
+  final bool elipsis;
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(title),
-      subtitle: Text(description),
-      leading: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [ColorUtils.adjustLightness(color), color])),
-        child: Icon(
-          icon,
-          color: Colors.white,
-        ),
+      title: Text(
+        title,
+        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(
+        description,
+        overflow: elipsis ? TextOverflow.ellipsis : TextOverflow.visible,
       ),
       trailing: Switch(
-        activeColor: color,
+        activeColor: colorSwitch,
         value: valueSwitch,
         onChanged: onChangedSwitch,
       ),

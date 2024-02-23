@@ -4,7 +4,7 @@ import 'package:minimal_habit_tracker/presentation/bloc/habit_cubit/habit_cubit.
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_button.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_scaffold.dart';
-import 'package:provider/provider.dart';
+
 import '../../../domain/entities/habit_entity.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -22,8 +22,6 @@ class _HabitCreateScreenState extends State<HabitCreateScreen> {
 
   final TextEditingController _descriptionController = TextEditingController();
 
-  final ValueNotifier<IconData> _selectedIcon = ValueNotifier(Icons.star);
-
   final TextEditingController _colorController =
       TextEditingController(text: Colors.greenAccent.value.toString());
 
@@ -31,7 +29,6 @@ class _HabitCreateScreenState extends State<HabitCreateScreen> {
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
-    _selectedIcon.dispose();
     _colorController.dispose();
     super.dispose();
   }
@@ -39,8 +36,8 @@ class _HabitCreateScreenState extends State<HabitCreateScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          HabitCubit(Provider.of<HabitRepositoryImpl>(context, listen: false)),
+      create: (context) => HabitCubit(
+          RepositoryProvider.of<HabitRepositoryImpl>(context, listen: false)),
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
           return bodyMethod(context);
@@ -57,7 +54,6 @@ class _HabitCreateScreenState extends State<HabitCreateScreen> {
             TextfieldsColumnWidget(
               nameController: _nameController,
               descriptionController: _descriptionController,
-              selectedIcon: _selectedIcon,
               colorController: _colorController,
             ),
           ],
@@ -78,7 +74,6 @@ class _HabitCreateScreenState extends State<HabitCreateScreen> {
             context.read<HabitCubit>().insert(HabitEntity(
                 title: _nameController.text,
                 description: _descriptionController.text,
-                codePoint: _selectedIcon.value.codePoint,
                 color: int.parse(_colorController.text)));
 
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

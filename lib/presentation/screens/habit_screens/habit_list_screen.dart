@@ -2,7 +2,6 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
 import '../../../core/utils/date_utilities.dart';
 import '../../../data/repositories/habit_repository_impl.dart';
 import '../../bloc/habit_cubit/habit_cubit.dart';
@@ -18,9 +17,9 @@ class HabitListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          HabitCubit(Provider.of<HabitRepositoryImpl>(context, listen: false))
-            ..get(),
+      create: (context) => HabitCubit(
+          RepositoryProvider.of<HabitRepositoryImpl>(context, listen: false))
+        ..get(),
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
           if (state is HabitLoading) {
@@ -55,18 +54,24 @@ class HabitListScreen extends StatelessWidget {
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                Colors.black38.withOpacity(0.5),
-                                Colors.black38.withOpacity(1)
+                                Colors.black38.withOpacity(0.7),
+                                Colors.black38.withOpacity(0.9)
                               ]),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(habit.color).withOpacity(0.5),
+                              spreadRadius: 0,
+                              blurRadius: 0,
+                              offset: const Offset(0, 0),
+                            )
+                          ],
                           borderRadius: BorderRadius.circular(10)),
                       child: Column(
                         children: [
                           CustomListTitle(
                             title: habit.title,
                             description: habit.description,
-                            color: Color(habit.color),
-                            icon: IconData(habit.codePoint,
-                                fontFamily: "MaterialIcons"),
+                            colorSwitch: Color(habit.color),
                             valueSwitch:
                                 habit.lastDate == DateUtilities.getToday(),
                             onChangedSwitch: (value) {
@@ -81,12 +86,9 @@ class HabitListScreen extends StatelessWidget {
                                           ))));
                             },
                           ),
-                          SizedBox(
-                            height: 200,
-                            child: BoxComplete(
-                              dates: habit.dates,
-                              color: habit.color,
-                            ),
+                          BoxComplete(
+                            dates: habit.dates,
+                            color: habit.color,
                           )
                         ],
                       ),

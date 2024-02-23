@@ -6,7 +6,7 @@ import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_u
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_button.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_list_title.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_scaffold.dart';
-import 'package:provider/provider.dart';
+
 import '../../../core/utils/date_utilities.dart';
 import '../../../core/utils/dialog_utils.dart';
 import '../../../data/repositories/habit_repository_impl.dart';
@@ -44,9 +44,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          HabitCubit(Provider.of<HabitRepositoryImpl>(context, listen: false))
-            ..getOne(widget.habitEntity.id!),
+      create: (context) => HabitCubit(
+          RepositoryProvider.of<HabitRepositoryImpl>(context, listen: false))
+        ..getOne(widget.habitEntity.id!),
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
           if (state is HabitLoading) {
@@ -69,17 +69,30 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     final habit = state.habits;
 
     return CustomScaffold(
-      title: Text(AppLocalizations.of(context)!.modify),
+      colorAppBar: Color(habit.color),
+      iconAppBar: Icon(
+        Icons.close,
+        color: Color(habit.color).computeLuminance() > 0.5
+            ? Colors.black
+            : Colors.white,
+      ),
+      title: Text(
+        AppLocalizations.of(context)!.modify,
+        style: TextStyle(
+            color: Color(habit.color).computeLuminance() > 0.5
+                ? Colors.black
+                : Colors.white),
+      ),
       body: SingleChildScrollView(
           child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
             CustomListTitle(
+                elipsis: false,
                 title: habit.title,
                 description: habit.description,
-                color: Color(habit.color),
-                icon: IconData(habit.codePoint, fontFamily: "MaterialIcons"),
+                colorSwitch: Color(habit.color),
                 valueSwitch: habit.lastDate == DateUtilities.getToday(),
                 onChangedSwitch: (value) {
                   context.read<HabitCubit>().toggleOne(habit.id!);
@@ -117,7 +130,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     });
               },
               color: Colors.redAccent,
-              text: Text(AppLocalizations.of(context)!.deleteHabit)),
+              text: Text(
+                AppLocalizations.of(context)!.deleteHabit,
+                style: const TextStyle(color: Colors.white),
+              )),
           CustomButton(
               borderRadius: 0,
               width: MediaQuery.of(context).size.width / 2,
@@ -130,7 +146,8 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                             ))));
               },
               color: Colors.deepPurpleAccent,
-              text: Text(AppLocalizations.of(context)!.modify)),
+              text: Text(AppLocalizations.of(context)!.modify,
+                  style: const TextStyle(color: Colors.white))),
         ],
       ),
     );
@@ -145,7 +162,14 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             headerBuilder: (BuildContext context, bool isExpanded) {
               return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(AppLocalizations.of(context)!.showCalendar));
+                  child: Text(
+                    AppLocalizations.of(context)!.showCalendar,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                    textAlign: TextAlign.center,
+                  ));
             },
             body: SizedBox(
                 width: MediaQuery.of(context).size.width,

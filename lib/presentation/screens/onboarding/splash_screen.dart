@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_list_screen.dart';
 
 import '../../../data/database/database_provider.dart';
-import '../home_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -14,15 +14,24 @@ class SplashScreen extends StatelessWidget {
         future: _initializeApp(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return const HomeScreen();
-          } else {
-            return Center(
-                child: Text(
+            // Navegar a HomeScreen y reemplazar la pantalla actual
+            Future.microtask(() {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const HabitListScreen()),
+              );
+            });
+          }
+
+          // Mientras se carga, muestra un mensaje de bienvenida
+          return Center(
+            child: Text(
               AppLocalizations.of(context)!.welcome,
               style: const TextStyle(fontSize: 36, fontWeight: FontWeight.w500),
               textAlign: TextAlign.center,
-            ));
-          }
+            ),
+          );
         },
       ),
     );
