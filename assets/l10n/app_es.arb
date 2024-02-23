@@ -17,5 +17,9 @@
     "primary": "Primarios",
     "accent": "Acento",
     "modify": "Modificar",
-    "showCalendar":"Mostrar calendario"
+    "showCalendar":"Mostrar calendario",
+    "commentsEnabled": "Comentarios habilitados",
+    "addComment": "Añadir comentario",
+    "cancel": "Cancelar",
+    "confirmComment": "¿Desea agregar un comentario?"
 }

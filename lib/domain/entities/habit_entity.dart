@@ -5,6 +5,7 @@ class HabitEntity {
   final int lastDate;
   final List<int> dates;
   final int color;
+  final bool canComent;
 
   HabitEntity(
       {required this.title,
@@ -12,10 +13,12 @@ class HabitEntity {
       this.id,
       lastDate,
       dates,
-      color})
+      color,
+      canComent})
       : dates = dates ?? [],
         lastDate = lastDate ?? 0,
-        color = color ?? 4285132974;
+        color = color ?? 4285132974,
+        canComent = canComent ?? false;
 
   Map<String, dynamic> toMap() {
     return {
@@ -23,7 +26,8 @@ class HabitEntity {
       "description": description,
       "lastDate": lastDate,
       "dates": dates,
-      "color": color
+      "color": color,
+      "canComent": canComent
     };
   }
 
@@ -33,14 +37,16 @@ class HabitEntity {
       int? newLastDate,
       int? newCodePoint,
       List<int>? newDates,
-      int? newColor}) {
+      int? newColor,
+      bool? newCanComent}) {
     return HabitEntity(
         id: id,
         title: newTitle ?? title,
         description: newDescription ?? description,
         lastDate: newLastDate ?? lastDate,
         dates: newDates ?? List<int>.from(dates),
-        color: newColor ?? color);
+        color: newColor ?? color,
+        canComent: newCanComent ?? canComent);
   }
 
   static HabitEntity fromMap(Map<String, dynamic> map, int id) {
@@ -50,6 +56,7 @@ class HabitEntity {
         description: map["description"],
         lastDate: map["lastDate"],
         dates: List<int>.from(map["dates"]),
-        color: map["color"]);
+        color: map["color"],
+        canComent: map["canComent"]);
   }
 }

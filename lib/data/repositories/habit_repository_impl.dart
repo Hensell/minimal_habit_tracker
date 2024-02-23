@@ -17,7 +17,7 @@ class HabitRepositoryImpl implements HabitRepository {
   }
 
   @override
-  Future<List<HabitEntity>> toggleToday(int complete) async {
+  Future<List<HabitEntity>> toggleAndReturnList(int complete) async {
     return await databaseClient.toogle(complete);
   }
 
@@ -27,7 +27,7 @@ class HabitRepositoryImpl implements HabitRepository {
   }
 
   @override
-  Future<HabitEntity> toggleTodayOne(int key) async {
+  Future<HabitEntity> toggleAndReturnOne(int key) async {
     return await databaseClient.toogleOne(key);
   }
 

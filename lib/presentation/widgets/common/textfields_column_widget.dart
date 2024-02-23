@@ -8,10 +8,12 @@ class TextfieldsColumnWidget extends StatelessWidget {
       {super.key,
       required this.nameController,
       required this.descriptionController,
-      required this.colorController});
+      required this.colorController,
+      required this.canComent});
   final TextEditingController nameController;
   final TextEditingController descriptionController;
   final TextEditingController colorController;
+  final ValueNotifier<bool> canComent;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,22 @@ class TextfieldsColumnWidget extends StatelessWidget {
               filled: true,
               label: Text(AppLocalizations.of(context)!.habitDescription)),
         ),
+        const Gap(20),
+        ValueListenableBuilder(
+            valueListenable: canComent,
+            builder: ((context, value, _) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(AppLocalizations.of(context)!.commentsEnabled),
+                  Switch(
+                      value: value,
+                      onChanged: (onChanged) {
+                        canComent.value = !value;
+                      }),
+                ],
+              );
+            })),
         const Gap(20),
         ColorPicker(
           onColorChanged: (Color value) {

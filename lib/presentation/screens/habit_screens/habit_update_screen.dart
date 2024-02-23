@@ -19,8 +19,8 @@ class HabitUpdateScreen extends StatefulWidget {
 class _HabitUpdateScreenState extends State<HabitUpdateScreen> {
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
-
   late TextEditingController _colorController;
+  late ValueNotifier<bool> _canComent;
   @override
   void initState() {
     super.initState();
@@ -30,6 +30,8 @@ class _HabitUpdateScreenState extends State<HabitUpdateScreen> {
 
     _colorController =
         TextEditingController(text: widget.habit.color.toString());
+
+    _canComent = ValueNotifier(widget.habit.canComent);
   }
 
   @override
@@ -81,6 +83,7 @@ class _HabitUpdateScreenState extends State<HabitUpdateScreen> {
                       nameController: _nameController,
                       descriptionController: _descriptionController,
                       colorController: _colorController,
+                      canComent: _canComent,
                     ),
                   ],
                 ),
@@ -127,9 +130,11 @@ class _HabitUpdateScreenState extends State<HabitUpdateScreen> {
 
   HabitEntity createNewHabitFromFields(HabitEntity habit) {
     HabitEntity newHabit = habit.copyWith(
-        newTitle: _nameController.text,
-        newDescription: _descriptionController.text,
-        newColor: int.parse(_colorController.text));
+      newTitle: _nameController.text,
+      newDescription: _descriptionController.text,
+      newCanComent: _canComent.value,
+      newColor: int.parse(_colorController.text),
+    );
 
     return newHabit;
   }

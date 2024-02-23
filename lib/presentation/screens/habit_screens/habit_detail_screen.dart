@@ -1,6 +1,7 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:minimal_habit_tracker/domain/entities/habit_entity.dart';
 import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_update_screen.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_button.dart';
@@ -162,13 +163,19 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             headerBuilder: (BuildContext context, bool isExpanded) {
               return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    AppLocalizations.of(context)!.showCalendar,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                    textAlign: TextAlign.center,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.calendar_month),
+                      const Gap(10),
+                      Text(
+                        AppLocalizations.of(context)!.showCalendar,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ));
             },
             body: SizedBox(

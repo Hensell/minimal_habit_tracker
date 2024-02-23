@@ -24,12 +24,13 @@ class _HabitCreateScreenState extends State<HabitCreateScreen> {
 
   final TextEditingController _colorController =
       TextEditingController(text: Colors.greenAccent.value.toString());
-
+  final ValueNotifier<bool> _canComent = ValueNotifier(false);
   @override
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
     _colorController.dispose();
+    _canComent.dispose();
     super.dispose();
   }
 
@@ -54,6 +55,7 @@ class _HabitCreateScreenState extends State<HabitCreateScreen> {
             TextfieldsColumnWidget(
               nameController: _nameController,
               descriptionController: _descriptionController,
+              canComent: _canComent,
               colorController: _colorController,
             ),
           ],
@@ -74,7 +76,10 @@ class _HabitCreateScreenState extends State<HabitCreateScreen> {
             context.read<HabitCubit>().insert(HabitEntity(
                 title: _nameController.text,
                 description: _descriptionController.text,
-                color: int.parse(_colorController.text)));
+                color: int.parse(
+                  _colorController.text,
+                ),
+                canComent: _canComent.value));
 
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 backgroundColor: const Color(0xFF523f5f),

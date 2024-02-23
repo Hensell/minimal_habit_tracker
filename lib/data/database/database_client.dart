@@ -1,10 +1,15 @@
 import 'package:minimal_habit_tracker/core/utils/date_utilities.dart';
 import 'package:minimal_habit_tracker/data/database/database_provider.dart';
+
 import 'package:minimal_habit_tracker/domain/entities/habit_entity.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/utils/value_utils.dart';
 
+import 'handlers/comment_handler.dart';
+
 class DatabaseClient {
+  final CommentHandler commentHandler = CommentHandler();
+
   final store = intMapStoreFactory.store("habit");
 
   Future<List<HabitEntity>> insertHabit(HabitEntity habitEntity) async {

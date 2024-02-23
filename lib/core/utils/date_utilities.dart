@@ -9,6 +9,13 @@ class DateUtilities {
     return dateWithoutTime.millisecondsSinceEpoch;
   }
 
+  static String getTodayFormated() {
+    DateTime currentDate = DateTime.now();
+    String dateFormated = DateFormat('dd/MM/yyyy').format(currentDate);
+
+    return dateFormated;
+  }
+
   static DateTime firstDayOfTheMonth() {
     DateTime now = DateTime.now();
     DateTime aYearAgo = DateTime(now.year, now.month, 1);

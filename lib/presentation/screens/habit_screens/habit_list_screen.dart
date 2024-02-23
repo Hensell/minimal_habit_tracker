@@ -2,6 +2,8 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:minimal_habit_tracker/core/utils/dialog_utils.dart';
+import 'package:minimal_habit_tracker/data/repositories/comment_repository_impl.dart';
 import '../../../core/utils/date_utilities.dart';
 import '../../../data/repositories/habit_repository_impl.dart';
 import '../../bloc/habit_cubit/habit_cubit.dart';
@@ -11,14 +13,30 @@ import '../../widgets/habit_list/habit_list_app_bar.dart';
 import 'habit_create_screen.dart';
 import 'habit_detail_screen.dart';
 
-class HabitListScreen extends StatelessWidget {
+class HabitListScreen extends StatefulWidget {
   const HabitListScreen({super.key});
+
+  @override
+  State<HabitListScreen> createState() => _HabitListScreenState();
+}
+
+class _HabitListScreenState extends State<HabitListScreen> {
+  TextEditingController addCommentController = TextEditingController();
+
+  @override
+  void dispose() {
+    addCommentController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HabitCubit(
-          RepositoryProvider.of<HabitRepositoryImpl>(context, listen: false))
+          RepositoryProvider.of<HabitRepositoryImpl>(context, listen: false),
+          commentRepository: RepositoryProvider.of<CommentRepositoryImpl>(
+              context,
+              listen: false))
         ..get(),
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
@@ -76,6 +94,15 @@ class HabitListScreen extends StatelessWidget {
                                 habit.lastDate == DateUtilities.getToday(),
                             onChangedSwitch: (value) {
                               context.read<HabitCubit>().toggle(habit.id!);
+                              if (habit.canComent && value) {
+                                DialogUtils.addCommentDialog(
+                                    context: context,
+                                    onAdd: () {
+                                      context.read<HabitCubit>().insertComment(
+                                          addCommentController.text, habit.id!);
+                                    },
+                                    addCommentController: addCommentController);
+                              }
                             },
                             onTap: () {
                               Navigator.pushReplacement(

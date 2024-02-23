@@ -86,8 +86,24 @@
 "showCalendar": "Show calendar",
 "@showcalendar":{
   "description": "To show a calendar."
+},
+
+"commentsEnabled" : "Comments enabled",
+"@commentsEnabled":{
+  "description": "If is enabled, the user can comment."
+},
+
+"addComment": "Add comment",
+"@addComment": {
+"description": "To add a comment."
+},
+"cancel":"Cancel",
+"@cancel":{
+  "description": "To cancel."
+},
+"confirmComment": "Would you like to add a comment?",
+"@confirmComment":{
+  "description": "To confirm a comment."
 }
-
-
 
 }

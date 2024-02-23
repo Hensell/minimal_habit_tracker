@@ -1,14 +1,33 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:minimal_habit_tracker/domain/entities/comment_entity.dart';
 import 'package:minimal_habit_tracker/domain/entities/habit_entity.dart';
+import 'package:minimal_habit_tracker/domain/repositories/comment_repository.dart';
 import 'package:minimal_habit_tracker/domain/repositories/habit_repository.dart';
+
+import '../../../core/utils/date_utilities.dart';
 
 part 'habit_state.dart';
 
 class HabitCubit extends Cubit<HabitState> {
   final HabitRepository _habitRepository;
+  final CommentRepository? _commentRepository;
 
-  HabitCubit(this._habitRepository) : super(HabitInitial());
+  HabitCubit(this._habitRepository, {CommentRepository? commentRepository})
+      : _commentRepository = commentRepository,
+        super(HabitInitial());
+
+  insertComment(String comment, int id) {
+    Map<String, String> firstComment = {
+      DateUtilities.getTodayFormated(): comment
+    };
+
+    CommentEntity entity =
+        CommentEntity(id: id, lastComment: firstComment, comments: {
+      DateUtilities.getTodayFormated(): [comment]
+    });
+    _commentRepository!.insert(entity);
+  }
 
   Future<void> get() async {
     emit(HabitLoading());
@@ -28,7 +47,7 @@ class HabitCubit extends Cubit<HabitState> {
   }
 
   Future<void> toggle(int key) async {
-    final updatedHabit = await _habitRepository.toggleToday(key);
+    final updatedHabit = await _habitRepository.toggleAndReturnList(key);
     emit(HabitSuccess(updatedHabit));
   }
 
@@ -39,7 +58,7 @@ class HabitCubit extends Cubit<HabitState> {
   }
 
   Future<void> toggleOne(int key) async {
-    final updatedHabit = await _habitRepository.toggleTodayOne(key);
+    final updatedHabit = await _habitRepository.toggleAndReturnOne(key);
     emit(HabitSuccessOne(updatedHabit));
   }
 
