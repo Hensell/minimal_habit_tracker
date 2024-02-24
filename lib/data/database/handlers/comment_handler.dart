@@ -30,20 +30,29 @@ class CommentHandler implements CommentRepository {
       if (existing == null) {
         await store.record(entity.id!).add(txn, entity.toMap());
       } else {
+        // Copia la entidad existente para no modificarla directamente
         CommentEntity newEntity = entity.copyWith();
 
+// Obtiene la clave y el valor del último comentario
         String key = newEntity.lastComment.keys.first;
         String value = 'comments';
 
+// Obtiene los comentarios existentes
         var comments = await existing.ref.get(txn);
         Map<String, dynamic>? commentsMap =
             comments![value] as Map<String, dynamic>?;
+
+// Obtiene el objeto de comentarios para la clave dada
         Object? commentsObject = commentsMap![key];
+
+// Convierte el objeto de comentarios a una lista de cadenas
         List<String> subclave =
             List<String>.from(commentsObject as List<dynamic>);
 
+// Agrega los comentarios a la entidad
         newEntity.comments!.putIfAbsent(key, () => subclave).addAll(subclave);
 
+// Actualiza la entidad en la base de datos
         await existing.ref.update(txn, newEntity.toMap());
       }
     });
@@ -63,6 +72,7 @@ class CommentHandler implements CommentRepository {
     final db = await DatabaseProvider.database;
 
     var value = await store.record(id).get(db);
+
     return CommentEntity.fromMap(value!, id);
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minimal_habit_tracker/data/repositories/habit_repository_impl.dart';
 import 'package:minimal_habit_tracker/presentation/bloc/habit_cubit/habit_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_list_screen.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_button.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_scaffold.dart';
 
@@ -49,6 +50,7 @@ class _HabitCreateScreenState extends State<HabitCreateScreen> {
 
   CustomScaffold bodyMethod(BuildContext context) {
     return CustomScaffold(
+        route: const HabitListScreen(),
         title: Text(AppLocalizations.of(context)!.addHabit),
         body: Column(
           children: [

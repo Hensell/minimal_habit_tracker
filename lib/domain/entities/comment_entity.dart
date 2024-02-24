@@ -25,10 +25,18 @@ class CommentEntity {
   }
 
   static CommentEntity fromMap(Map<String, dynamic> map, int id) {
+    final lastCommentMap = (map["lastComment"] as Map<String, dynamic>)
+        .map<String, String>((key, value) => MapEntry(key, value.toString()));
+
+    final commentsMap =
+        (map["comments"] as Map<String, dynamic>?)?.map<String, List<String>>(
+      (key, value) => MapEntry(key, List<String>.from(value as List<dynamic>)),
+    );
+
     return CommentEntity(
       id: id,
-      lastComment: map["lastComment"],
-      comments: map["comments"],
+      lastComment: lastCommentMap,
+      comments: commentsMap,
     );
   }
 }

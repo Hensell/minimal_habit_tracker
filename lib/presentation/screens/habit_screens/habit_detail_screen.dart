@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:minimal_habit_tracker/domain/entities/habit_entity.dart';
+import 'package:minimal_habit_tracker/presentation/screens/comment_screens/comment_list_screen.dart';
 import 'package:minimal_habit_tracker/presentation/screens/habit_screens/habit_update_screen.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_button.dart';
 import 'package:minimal_habit_tracker/presentation/widgets/common/custom_list_title.dart';
@@ -99,6 +100,17 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   context.read<HabitCubit>().toggleOne(habit.id!);
                 }),
             showCalendarMethod(context, habit),
+            const Gap(20),
+            CustomButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => CommentListScreen(habit: habit)));
+              },
+              color: Colors.deepPurpleAccent,
+              //todo texto
+              text:
+                  const Text("comments", style: TextStyle(color: Colors.white)),
+            )
           ],
         ),
       )),
@@ -151,6 +163,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   style: const TextStyle(color: Colors.white))),
         ],
       ),
+      route: const HabitListScreen(),
     );
   }
 

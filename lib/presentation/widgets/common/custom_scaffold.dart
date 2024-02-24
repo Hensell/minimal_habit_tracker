@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../screens/habit_screens/habit_list_screen.dart';
-
 class CustomScaffold extends StatelessWidget {
   const CustomScaffold(
       {super.key,
@@ -9,12 +7,14 @@ class CustomScaffold extends StatelessWidget {
       required this.body,
       this.bottonBar,
       this.colorAppBar,
-      this.iconAppBar});
+      this.iconAppBar,
+      required this.route});
   final Widget title;
   final Widget body;
   final Widget? bottonBar;
   final Color? colorAppBar;
   final Widget? iconAppBar;
+  final Widget route;
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -22,7 +22,7 @@ class CustomScaffold extends StatelessWidget {
       onPopInvoked: (didPop) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HabitListScreen()),
+          MaterialPageRoute(builder: (context) => route),
         );
       },
       child: Scaffold(
@@ -34,8 +34,7 @@ class CustomScaffold extends StatelessWidget {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const HabitListScreen()),
+                  MaterialPageRoute(builder: (context) => route),
                 );
               },
               icon: iconAppBar ?? const Icon(Icons.close)),

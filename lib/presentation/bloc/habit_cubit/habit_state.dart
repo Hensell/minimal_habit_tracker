@@ -18,3 +18,13 @@ final class HabitSuccessOne extends HabitState {
 final class HabitLoading extends HabitState {}
 
 final class HabitError extends HabitState {}
+
+final class HabitCommentSuccess extends HabitState {
+  final List<CommentEntity> rows;
+  HabitCommentSuccess(this.rows);
+}
+
+final class HabitOneCommentSuccess extends HabitState {
+  final CommentEntity rows;
+  HabitOneCommentSuccess(this.rows);
+}
