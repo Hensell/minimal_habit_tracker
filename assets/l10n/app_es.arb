@@ -21,5 +21,6 @@
     "commentsEnabled": "Comentarios habilitados",
     "addComment": "Añadir comentario",
     "cancel": "Cancelar",
-    "confirmComment": "¿Desea agregar un comentario?"
+    "confirmComment": "¿Desea agregar un comentario?",
+    "goToComments": "Ir a comentarios"
 }

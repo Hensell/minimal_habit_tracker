@@ -107,9 +107,8 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     builder: (context) => CommentListScreen(habit: habit)));
               },
               color: Colors.deepPurpleAccent,
-              //todo texto
-              text:
-                  const Text("comments", style: TextStyle(color: Colors.white)),
+              text: Text(AppLocalizations.of(context)!.goToComments,
+                  style: const TextStyle(color: Colors.white)),
             )
           ],
         ),

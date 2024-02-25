@@ -1,12 +1,13 @@
 class CommentEntity {
   final int? id;
-  final Map<String, String> lastComment;
-  final Map<String, List<String>>? comments;
+  final Map<String, dynamic> lastComment;
+  final Map<String, List<dynamic>>? comments;
 
   CommentEntity({this.id, required this.lastComment, this.comments});
 
   Map<String, dynamic> toMap() {
     return {
+      "id": id,
       "lastComment": lastComment,
       "comments": comments,
     };
@@ -14,8 +15,8 @@ class CommentEntity {
 
   CommentEntity copyWith({
     int? newId,
-    Map<String, String>? newLastComment,
-    Map<String, List<String>>? newComments,
+    Map<String, dynamic>? newLastComment,
+    Map<String, List<dynamic>>? newComments,
   }) {
     return CommentEntity(
       id: newId ?? id,
@@ -29,7 +30,7 @@ class CommentEntity {
         .map<String, String>((key, value) => MapEntry(key, value.toString()));
 
     final commentsMap =
-        (map["comments"] as Map<String, dynamic>?)?.map<String, List<String>>(
+        (map["comments"] as Map<String, dynamic>?)?.map<String, List<dynamic>>(
       (key, value) => MapEntry(key, List<String>.from(value as List<dynamic>)),
     );
 

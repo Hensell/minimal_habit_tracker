@@ -5,7 +5,7 @@ import 'package:sembast/sembast.dart';
 import '../database_provider.dart';
 
 class CommentHandler implements CommentRepository {
-  final store = intMapStoreFactory.store("cooments");
+  final store = intMapStoreFactory.store("comments");
 
   @override
   Future<List<CommentEntity>> get() async {
@@ -27,32 +27,32 @@ class CommentHandler implements CommentRepository {
       var existing = await store
           .query(finder: Finder(filter: Filter.byKey(entity.id!)))
           .getSnapshot(txn);
+
       if (existing == null) {
         await store.record(entity.id!).add(txn, entity.toMap());
       } else {
-        // Copia la entidad existente para no modificarla directamente
+        // Copiar la entidad existente
         CommentEntity newEntity = entity.copyWith();
 
-// Obtiene la clave y el valor del último comentario
-        String key = newEntity.lastComment.keys.first;
-        String value = 'comments';
+        // Obtener la clave para los comentarios
+        String keyComment = 'comments';
 
-// Obtiene los comentarios existentes
+        // Obtener los comentarios existentes
         var comments = await existing.ref.get(txn);
+
         Map<String, dynamic>? commentsMap =
-            comments![value] as Map<String, dynamic>?;
+            comments?[keyComment] as Map<String, dynamic>?;
 
-// Obtiene el objeto de comentarios para la clave dada
-        Object? commentsObject = commentsMap![key];
+        // Agregar los comentarios al nuevoEntity
+        commentsMap?.forEach((keys, values) {
+          if (newEntity.comments!.containsKey(keys)) {
+            newEntity.comments![keys]!.addAll(values);
+          } else {
+            newEntity.comments![keys] = values;
+          }
+        });
 
-// Convierte el objeto de comentarios a una lista de cadenas
-        List<String> subclave =
-            List<String>.from(commentsObject as List<dynamic>);
-
-// Agrega los comentarios a la entidad
-        newEntity.comments!.putIfAbsent(key, () => subclave).addAll(subclave);
-
-// Actualiza la entidad en la base de datos
+        // Actualizar la entidad existente con los nuevos comentarios
         await existing.ref.update(txn, newEntity.toMap());
       }
     });

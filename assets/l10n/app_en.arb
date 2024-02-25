@@ -104,6 +104,10 @@
 "confirmComment": "Would you like to add a comment?",
 "@confirmComment":{
   "description": "To confirm a comment."
+},
+"goToComments": "Go to comments",
+"@goToComments":{
+  "description": "To go to comment."
 }
 
 }
