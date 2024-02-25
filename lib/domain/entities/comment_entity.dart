@@ -1,43 +1,27 @@
 class CommentEntity {
   final int? id;
-  final Map<String, dynamic> lastComment;
-  final Map<String, List<dynamic>>? comments;
+  final int idHabit;
+  final Map<String, dynamic> comment;
 
-  CommentEntity({this.id, required this.lastComment, this.comments});
+  CommentEntity({this.id, required this.idHabit, required this.comment});
 
   Map<String, dynamic> toMap() {
-    return {
-      "id": id,
-      "lastComment": lastComment,
-      "comments": comments,
-    };
+    return {"idHabit": idHabit, "comment": comment};
   }
 
-  CommentEntity copyWith({
-    int? newId,
-    Map<String, dynamic>? newLastComment,
-    Map<String, List<dynamic>>? newComments,
-  }) {
+  CommentEntity copyWith(
+      {int? newId, int? newIdHabit, Map<String, dynamic>? newComment}) {
     return CommentEntity(
-      id: newId ?? id,
-      lastComment: newLastComment ?? lastComment,
-      comments: newComments ?? comments,
-    );
+        id: newId ?? id,
+        idHabit: newIdHabit ?? idHabit,
+        comment: newComment ?? comment);
   }
 
   static CommentEntity fromMap(Map<String, dynamic> map, int id) {
-    final lastCommentMap = (map["lastComment"] as Map<String, dynamic>)
+    final comment = (map["comment"] as Map<String, dynamic>)
         .map<String, String>((key, value) => MapEntry(key, value.toString()));
+    final idHabit = (map["idHabit"] as int);
 
-    final commentsMap =
-        (map["comments"] as Map<String, dynamic>?)?.map<String, List<dynamic>>(
-      (key, value) => MapEntry(key, List<String>.from(value as List<dynamic>)),
-    );
-
-    return CommentEntity(
-      id: id,
-      lastComment: lastCommentMap,
-      comments: commentsMap,
-    );
+    return CommentEntity(id: id, idHabit: idHabit, comment: comment);
   }
 }

@@ -22,23 +22,20 @@ class HabitCubit extends Cubit<HabitState> {
       DateUtilities.getTodayFormated(): comment
     };
 
-    CommentEntity entity =
-        CommentEntity(id: id, lastComment: firstComment, comments: {
-      DateUtilities.getTodayFormated(): [comment]
-    });
+    CommentEntity entity = CommentEntity(idHabit: id, comment: firstComment);
     _commentRepository!.insert(entity);
   }
 
-  Future<void> getComment() async {
+  Future<void> getComment(int idHabit) async {
     emit(HabitLoading());
-    final result = await _commentRepository!.get();
+    final result = await _commentRepository!.get(idHabit);
     emit(HabitCommentSuccess(result));
   }
 
   Future<void> getOneComment(int id) async {
     emit(HabitLoading());
     final result = await _commentRepository!.getOne(id);
-    emit(HabitOneCommentSuccess(result));
+    emit(HabitCommentSuccess(result));
   }
 
   Future<void> get() async {

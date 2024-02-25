@@ -13,13 +13,13 @@ class CommentRepositoryImpl implements CommentRepository {
   }
 
   @override
-  Future<List<CommentEntity>> get() async {
-    final result = await databaseClient.commentHandler.get();
+  Future<List<CommentEntity>> get(int idHabit) async {
+    final result = await databaseClient.commentHandler.get(idHabit);
     return result;
   }
 
   @override
-  Future<CommentEntity> getOne(int id) async {
+  Future<List<CommentEntity>> getOne(int id) async {
     final result = await databaseClient.commentHandler.getOne(id);
     return result;
   }
@@ -30,7 +30,7 @@ class CommentRepositoryImpl implements CommentRepository {
   }
 
   @override
-  Future<CommentEntity> update(CommentEntity entity) {
+  Future<List<CommentEntity>> update(CommentEntity entity) {
     final result = databaseClient.commentHandler.update(entity);
     return result;
   }

@@ -23,25 +23,30 @@ class CommentListScreen extends StatelessWidget {
         ..getOneComment(habit.id!),
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
-          if (state is HabitOneCommentSuccess) {
-            final elementC = state.rows.comments;
+          if (state is HabitCommentSuccess) {
+            final items = state.rows;
+            Map<String, dynamic> mergedMap = {};
+            for (var comment in items) {
+              comment.comment.forEach((key, value) {
+                if (mergedMap.containsKey(key)) {
+                  mergedMap[key].add(value);
+                } else {
+                  mergedMap[key] = [value];
+                }
+              });
+            }
+
             return CustomScaffold(
                 title: Text(habit.title),
                 body: ListView.builder(
-                  itemCount: elementC!.length,
+                  itemCount: mergedMap.length,
                   itemBuilder: (context, index) {
-                    String key = elementC.keys.elementAt(index);
-                    List<dynamic> value = elementC[key]!;
-                    return Column(
-                      children: [
-                        Text(key,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
-                        Column(
-                          children: value.map((item) => Text(item)).toList(),
-                        ),
-                        const Divider(),
-                      ],
+                    var key = mergedMap.keys.toList()[index];
+                    var value = mergedMap[key]!.join(', ');
+
+                    return ListTile(
+                      title: Text(key),
+                      subtitle: Text(value),
                     );
                   },
                 ),

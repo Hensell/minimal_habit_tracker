@@ -8,10 +8,10 @@ class CommentHandler implements CommentRepository {
   final store = intMapStoreFactory.store("comments");
 
   @override
-  Future<List<CommentEntity>> get() async {
+  Future<List<CommentEntity>> get(int idHabit) async {
     final db = await DatabaseProvider.database;
-
-    final snapshot = await store.find(db);
+    Finder finder = Finder(filter: Filter.equals("idHabit", idHabit));
+    final snapshot = await store.find(db, finder: finder);
 
     return snapshot.map((item) {
       final pwd = CommentEntity.fromMap(item.value, item.key);
@@ -24,42 +24,12 @@ class CommentHandler implements CommentRepository {
     final db = await DatabaseProvider.database;
 
     await db.transaction((txn) async {
-      var existing = await store
-          .query(finder: Finder(filter: Filter.byKey(entity.id!)))
-          .getSnapshot(txn);
-
-      if (existing == null) {
-        await store.record(entity.id!).add(txn, entity.toMap());
-      } else {
-        // Copiar la entidad existente
-        CommentEntity newEntity = entity.copyWith();
-
-        // Obtener la clave para los comentarios
-        String keyComment = 'comments';
-
-        // Obtener los comentarios existentes
-        var comments = await existing.ref.get(txn);
-
-        Map<String, dynamic>? commentsMap =
-            comments?[keyComment] as Map<String, dynamic>?;
-
-        // Agregar los comentarios al nuevoEntity
-        commentsMap?.forEach((keys, values) {
-          if (newEntity.comments!.containsKey(keys)) {
-            newEntity.comments![keys]!.addAll(values);
-          } else {
-            newEntity.comments![keys] = values;
-          }
-        });
-
-        // Actualizar la entidad existente con los nuevos comentarios
-        await existing.ref.update(txn, newEntity.toMap());
-      }
+      await store.add(txn, entity.toMap());
     });
   }
 
   @override
-  Future<CommentEntity> update(CommentEntity entity) async {
+  Future<List<CommentEntity>> update(CommentEntity entity) async {
     final db = await DatabaseProvider.database;
 
     await store.record(entity.id!).update(db, entity.toMap());
@@ -68,12 +38,16 @@ class CommentHandler implements CommentRepository {
   }
 
   @override
-  Future<CommentEntity> getOne(int id) async {
+  Future<List<CommentEntity>> getOne(int id) async {
     final db = await DatabaseProvider.database;
+    Finder finder = Finder(filter: Filter.equals("idHabit", id));
 
-    var value = await store.record(id).get(db);
+    final snapshot = await store.find(db, finder: finder);
 
-    return CommentEntity.fromMap(value!, id);
+    return snapshot.map((item) {
+      final pwd = CommentEntity.fromMap(item.value, item.key);
+      return pwd;
+    }).toList();
   }
 
   @override
