@@ -120,7 +120,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
               width: MediaQuery.of(context).size.width / 2,
               borderRadius: 0,
               onPressed: () {
-                DialogUtils.deleteDialog(
+                DialogUtils.deleteHabitDialog(
                     context: context,
                     onDelete: () async {
                       await context
@@ -166,66 +166,60 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     );
   }
 
-  ExpansionPanelList showCalendarMethod(
-      BuildContext context, HabitEntity habit) {
-    return ExpansionPanelList.radio(
+  ExpansionTile showCalendarMethod(BuildContext context, HabitEntity habit) {
+    return ExpansionTile(
+      title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              const Icon(Icons.calendar_month),
+              const Gap(10),
+              Text(
+                AppLocalizations.of(context)!.showCalendar,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          )),
       children: [
-        ExpansionPanelRadio(
-            canTapOnHeader: true,
-            headerBuilder: (BuildContext context, bool isExpanded) {
-              return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.calendar_month),
-                      const Gap(10),
-                      Text(
-                        AppLocalizations.of(context)!.showCalendar,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ));
-            },
-            body: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: CalendarDatePicker2(
-                  displayedMonthDate: finalDate,
-                  config: CalendarDatePicker2Config(
-                      lastDate: DateTime.now(),
-                      calendarType: CalendarDatePicker2Type.multi),
-                  value: DateUtilities.millisecondsToDate(habit.dates),
-                  onDisplayedMonthChanged: (value) {
-                    finalDate = value;
-                  },
-                  onValueChanged: (dates) {
-                    List<DateTime> nonNullableDates =
-                        dates.whereType<DateTime>().toList();
+        SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: CalendarDatePicker2(
+              displayedMonthDate: finalDate,
+              config: CalendarDatePicker2Config(
+                  lastDate: DateTime.now(),
+                  calendarType: CalendarDatePicker2Type.multi),
+              value: DateUtilities.millisecondsToDate(habit.dates),
+              onDisplayedMonthChanged: (value) {
+                finalDate = value;
+              },
+              onValueChanged: (dates) {
+                List<DateTime> nonNullableDates =
+                    dates.whereType<DateTime>().toList();
 
-                    bool existsToday = nonNullableDates.any((date) =>
-                        date.year == DateTime.now().year &&
-                        date.month == DateTime.now().month &&
-                        date.day == DateTime.now().day);
-                    HabitEntity newHabit;
-                    if (existsToday) {
-                      newHabit = habit.copyWith(
-                          newLastDate: DateUtilities.getToday(),
-                          newDates: DateUtilities.dateToMilliseconds(
-                              nonNullableDates));
-                    } else {
-                      newHabit = habit.copyWith(
-                          newLastDate: 0,
-                          newDates: DateUtilities.dateToMilliseconds(
-                              nonNullableDates));
-                    }
+                bool existsToday = nonNullableDates.any((date) =>
+                    date.year == DateTime.now().year &&
+                    date.month == DateTime.now().month &&
+                    date.day == DateTime.now().day);
+                HabitEntity newHabit;
+                if (existsToday) {
+                  newHabit = habit.copyWith(
+                      newLastDate: DateUtilities.getToday(),
+                      newDates:
+                          DateUtilities.dateToMilliseconds(nonNullableDates));
+                } else {
+                  newHabit = habit.copyWith(
+                      newLastDate: 0,
+                      newDates:
+                          DateUtilities.dateToMilliseconds(nonNullableDates));
+                }
 
-                    context.read<HabitCubit>().update(newHabit);
-                  },
-                )),
-            value: 'panel1')
+                context.read<HabitCubit>().update(newHabit);
+              },
+            ))
       ],
     );
   }

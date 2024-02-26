@@ -7,8 +7,8 @@ class CommentRepositoryImpl implements CommentRepository {
   final DatabaseClient databaseClient = DatabaseClient();
 
   @override
-  Future<int> delete(CommentEntity entity) async {
-    final result = await databaseClient.commentHandler.delete(entity);
+  Future<int> delete({required int id}) async {
+    final result = await databaseClient.commentHandler.delete(id: id);
     return result;
   }
 
@@ -30,8 +30,9 @@ class CommentRepositoryImpl implements CommentRepository {
   }
 
   @override
-  Future<List<CommentEntity>> update(CommentEntity entity) {
-    final result = databaseClient.commentHandler.update(entity);
-    return result;
+  Future<void> update(
+      {required int id, required String newText, required mapKey}) async {
+    await databaseClient.commentHandler
+        .update(id: id, newText: newText, mapKey: mapKey);
   }
 }

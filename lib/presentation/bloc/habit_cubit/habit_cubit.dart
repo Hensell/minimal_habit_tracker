@@ -26,18 +26,6 @@ class HabitCubit extends Cubit<HabitState> {
     _commentRepository!.insert(entity);
   }
 
-  Future<void> getComment(int idHabit) async {
-    emit(HabitLoading());
-    final result = await _commentRepository!.get(idHabit);
-    emit(HabitCommentSuccess(result));
-  }
-
-  Future<void> getOneComment(int id) async {
-    emit(HabitLoading());
-    final result = await _commentRepository!.getOne(id);
-    emit(HabitCommentSuccess(result));
-  }
-
   Future<void> get() async {
     emit(HabitLoading());
     final list = await _habitRepository.get();

@@ -20,8 +20,9 @@ final class HabitLoading extends HabitState {}
 final class HabitError extends HabitState {}
 
 final class HabitCommentSuccess extends HabitState {
-  final List<CommentEntity> rows;
-  HabitCommentSuccess(this.rows);
+  final List<CommentEntity>? rows;
+  final Map<String, List<CommentEntity>>? maps;
+  HabitCommentSuccess({this.rows, this.maps});
 }
 
 final class HabitOneCommentSuccess extends HabitState {

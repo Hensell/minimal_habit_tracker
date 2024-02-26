@@ -22,5 +22,13 @@
     "addComment": "Añadir comentario",
     "cancel": "Cancelar",
     "confirmComment": "¿Desea agregar un comentario?",
-    "goToComments": "Ir a comentarios"
+    "goToComments": "Ir a comentarios",
+    "deleteComment": "Eliminar comentario",
+    "confirmDeleteComment": "¿Está seguro de que desea eliminar este comentario? Esta acción no se puede deshacer",
+    "editComment": "Editar comentario",
+    "confirmEditDialog":"¿Está seguro de que desea editar este comentario?",
+    "noComments": "Sin comentarios",
+    "toReturn": "regresar"
+
+
 }

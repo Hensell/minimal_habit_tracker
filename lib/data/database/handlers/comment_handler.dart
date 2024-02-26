@@ -29,12 +29,14 @@ class CommentHandler implements CommentRepository {
   }
 
   @override
-  Future<List<CommentEntity>> update(CommentEntity entity) async {
+  Future<void> update(
+      {required int id,
+      required String newText,
+      required String mapKey}) async {
+    const String key = "comment";
     final db = await DatabaseProvider.database;
-
-    await store.record(entity.id!).update(db, entity.toMap());
-
-    return await getOne(entity.id!);
+    var record = store.record(id);
+    await record.update(db, {'$key.$mapKey': newText});
   }
 
   @override
@@ -51,10 +53,10 @@ class CommentHandler implements CommentRepository {
   }
 
   @override
-  Future<int> delete(CommentEntity entity) async {
+  Future<int> delete({required int id}) async {
     final db = await DatabaseProvider.database;
 
-    final key = await store.record(entity.id!).delete(db);
+    final key = await store.record(id).delete(db);
 
     return key ?? 0;
   }
