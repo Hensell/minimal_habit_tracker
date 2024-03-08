@@ -14,7 +14,7 @@ Instrucciones para instalar la aplicación.
 
 ## Screenshots
 
-<img src="screenshots/1.gif" width="250" height="470" />
+<img src="screenshots/1.gif" width="200" height="417" />
 ![Captura de Pantalla 2](screenshots/screenshot2.png)
 ...
 
