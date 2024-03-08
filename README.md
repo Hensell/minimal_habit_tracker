@@ -2,22 +2,22 @@
 
 An app built with Flutter that helps you track your habits.
 
+## Web live
+[Link](https://github.com/Hensell/minimal_habit_tracker?tab=readme-ov-file)
+
 ## Screenshots
 
 ### Add a habit
 <img src="screenshots/1.gif" width="200" height="417" />
-![Captura de Pantalla 2](screenshots/screenshot2.png)
-...
 
-## System Requirements
+### You can complete a habit from the main screen or the calendar screen
+<img src="screenshots/2.gif" width="200" height="417" />
 
-- Requisito 1
-- Requisito 2
-- ...
+### Edit a habit
+<img src="screenshots/4.gif" width="200" height="417" />
 
-## Usage
-
-Instrucciones de uso de la aplicación.
+### Add a comment
+<img src="screenshots/3.gif" width="200" height="417" />
 
 
 ## License
@@ -25,7 +25,7 @@ Instrucciones de uso de la aplicación.
 ```
 MIT License
 
-Copyright (c) 2024 D-velopers
+Copyright (c) 2024 Hensell
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
