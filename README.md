@@ -2,18 +2,9 @@
 
 An app built with Flutter that helps you track your habits.
 
-## Installation
-
-Instrucciones para instalar la aplicación.
-
-## Features
-
-- Característica 1
-- Característica 2
-- ...
-
 ## Screenshots
 
+### Add a habit
 <img src="screenshots/1.gif" width="200" height="417" />
 ![Captura de Pantalla 2](screenshots/screenshot2.png)
 ...
