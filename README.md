@@ -14,7 +14,7 @@ Instrucciones para instalar la aplicación.
 
 ## Screenshots
 
-![Captura de Pantalla 1](screenshots/screenshot1.png)
+![Animation](screenshots/1.gif)
 ![Captura de Pantalla 2](screenshots/screenshot2.png)
 ...
 
